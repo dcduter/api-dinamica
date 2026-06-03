@@ -1,0 +1,10 @@
+options All -Indexes
+options -MultiViews
+
+# permite que se muestre todas las opciones
+RewriteEngine On 
+
+#permite que 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]
