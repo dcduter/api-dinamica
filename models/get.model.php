@@ -26,6 +26,7 @@ class GetModel {
      * @param string $table Nombre de la tabla a consultar.
      * @return array Conjunto de registros estructurados como objetos de clase (PDO::FETCH_CLASS).
      */
+    /* ========= peticiones sin filtro ========= */
     static public function getData($table, $select){
         
         //la consulta se prepara de forma dinamica con $select que viene desde el controlador y este desde get.php
@@ -37,6 +38,25 @@ class GetModel {
         $stmt->execute(); 
         
         return $stmt->fetchAll(PDO::FETCH_CLASS); 
-    } 
-}
+    }
+    
+    /* ========= peticiones con filtro ========= */
+    static public function getDataFilter($table, $select, $linkTo, $equalTo){
+        
+        //la consulta se prepara de forma dinamica con $select que viene desde el controlador y este desde get.php
+        $sql = "SELECT $select FROM $table WHERE $linkTo = :$linkTo ";
+        
+        // preparación de la sentencia sql
+        $stmt = Connection::connectDataBase()->prepare($sql); 
+        
+        //bindeo de parametros, el bindeo es para 
+        $stmt->bindParam(":".$linkTo, $equalTo, PDO::PARAM_STR);
+
+        // se ejecuta la sentencia sql
+        $stmt->execute(); 
+
+        // se obtienen todos los registros de la consulta
+        return $stmt->fetchAll(PDO::FETCH_CLASS); 
+    }
+}  // se entrega al controlador
 ?>

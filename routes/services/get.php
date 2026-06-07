@@ -20,5 +20,20 @@ $select = (isset($_GET['select'])) ? $_GET['select'] : "*"; // Columnas a selecc
 
 // Solicita la información al Controlador
 $response = new GetController(); // se instacia la clase para obtener la funcion getData
-$response -> getData($table, $select); // se ejecuta la funcion getData
+
+
+/* ========= peticiones con filtro ========= */
+// se pregunta si viene el GET con linkTo y equalTo
+if(isset($_GET['linkTo']) && isset($_GET['equalTo'])){
+    
+    $response -> getDataFilter($table, $select, $_GET["linkTo"], $_GET["equalTo"]); // se ejecuta la funcion getData      
+
+}else{
+    /* ========= peticiones sin filtro ========= */
+    //peticion sin filtro
+    $response -> getData($table, $select); // se ejecuta la funcion getData      
+}
+
+
+
 

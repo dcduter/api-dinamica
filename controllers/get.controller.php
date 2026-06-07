@@ -23,6 +23,8 @@ class GetController{
      * @param string $table Nombre de la tabla de la base de datos a consultar.
      * @return array|object Devuelve un conjunto de registros como array de objetos obtenidos de la BD.
      */
+
+    /* ========= peticiones sin filtro ========= */
     static public function getData($table, $select){
         // se recive $select de la vista oseea get.php
       // se envia a get.model.php
@@ -30,6 +32,20 @@ class GetController{
       /* SE PIDE UN RESPUESTA DEL MODELO get.model.php */
       $response = GetModel::getData($table, $select);
       // lo devolvemos a routes/get.php
+      // se retorna una nueva clase de getcontroller y se ejecuta el metodo fncResponse
+      $return = new GetController();
+      $return -> fncResponse($response); // se le pasa la respuesta que de el modelo
+      
+        
+    }
+     /* ========= peticiones con filtro ========= */
+    static public function getDataFilter($table, $select, $linkTo, $equalTo){
+        // se recive $select de la vista oseea get.php
+      // se envia a get.model.php
+      
+      /* SE PIDE UN RESPUESTA DEL MODELO get.model.php */
+      $response = GetModel::getDataFilter($table, $select, $linkTo, $equalTo);
+      // lo devolvemos a el modelo y este a get.php
       // se retorna una nueva clase de getcontroller y se ejecuta el metodo fncResponse
       $return = new GetController();
       $return -> fncResponse($response); // se le pasa la respuesta que de el modelo
