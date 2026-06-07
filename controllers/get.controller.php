@@ -13,8 +13,7 @@ require_once "models/get.model.php";
  * @package  Controllers
  */
 class GetController{
-    
-    /**
+     /**
      * Metodo para retornar los datos del modelo.
      * 
      * [Cambio por IA]
@@ -24,11 +23,12 @@ class GetController{
      * @param string $table Nombre de la tabla de la base de datos a consultar.
      * @return array|object Devuelve un conjunto de registros como array de objetos obtenidos de la BD.
      */
-    static function getData($table){
+    static public function getData($table, $select){
+        // se recive $select de la vista oseea get.php
       // se envia a get.model.php
       
       /* SE PIDE UN RESPUESTA DEL MODELO get.model.php */
-      $response = GetModel::getData($table);
+      $response = GetModel::getData($table, $select);
       // lo devolvemos a routes/get.php
       // se retorna una nueva clase de getcontroller y se ejecuta el metodo fncResponse
       $return = new GetController();

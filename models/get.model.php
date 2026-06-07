@@ -26,9 +26,10 @@ class GetModel {
      * @param string $table Nombre de la tabla a consultar.
      * @return array Conjunto de registros estructurados como objetos de clase (PDO::FETCH_CLASS).
      */
-    static public function getData($table){
+    static public function getData($table, $select){
         
-        $sql = "SELECT * FROM $table";
+        //la consulta se prepara de forma dinamica con $select que viene desde el controlador y este desde get.php
+        $sql = "SELECT $select FROM $table";
         
         // preparación de la sentencia sql
         $stmt = Connection::connectDataBase()->prepare($sql); 

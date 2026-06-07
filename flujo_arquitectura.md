@@ -32,16 +32,17 @@ sequenceDiagram
     Note over Routes: Evalúa la URL y el método HTTP (GET, POST, etc.)
     Routes->>GetService: 4. Si es GET, incluye el servicio (include)
     Note over GetService: Obtiene el nombre de la tabla (ej. "usuarios") de la URL
-    GetService->>GetCtrl: 5. Llama a GetController::getData($table)
+    GetService->>GetCtrl: 5. Instancia GetController y ejecuta getData($table)
+    Note over GetCtrl: Importa internamente get.model.php (require_once)
     GetCtrl->>GetModel: 6. Llama a GetModel::getData($table)
-    GetModel->>Conn: 7. Llama a Connection::connetcDataBase()
+    GetModel->>Conn: 7. Llama a Connection::connectDataBase()
     Conn->>DB: 8. Ejecuta la consulta SQL de forma segura
     DB-->>Conn: 9. Devuelve las filas encontradas
     Conn-->>GetModel: 10. Retorna el objeto de conexión activa
     GetModel-->>GetCtrl: 11. Devuelve un Array de Objetos (los registros)
-    GetCtrl-->>GetService: 12. Devuelve la respuesta al servicio
-    Note over GetService: Codifica los datos en formato JSON
-    GetService-->>Cliente: 13. Retorna la respuesta JSON con código HTTP (200, 404, etc.)
+    GetCtrl->>GetCtrl: 12. Instancia GetController y llama a fncResponse($response)
+    Note over GetCtrl: Formatea a JSON y establece el código HTTP de respuesta
+    GetCtrl-->>Cliente: 13. Retorna la respuesta JSON con código HTTP (200, 404, etc.)
 ```
 
 ---
@@ -66,18 +67,18 @@ sequenceDiagram
     *   Si es una petición `GET`, incluye a `routes/services/get.php`.
 
 ### 4. `routes/services/get.php` (El integrador del servicio GET)
-*   **Propósito:** Procesa específicamente las peticiones de lectura (`GET`). Toma el nombre de la tabla solicitado desde la URL y lo pasa al controlador.
+*   **Propósito:** [Cambio por IA] Procesa específicamente las peticiones de lectura (`GET`). Extrae el nombre de la tabla de la URL, instancia `GetController` y ejecuta el método `getData($table)`.
 *   **Conexión de entrada:** Incluido por `routes/routes.php`.
-*   **Conexión de salida:** Debe comunicarse con `controllers/get.controller.php` para obtener los datos reales de la base de datos y retornarlos al cliente con `json_encode()`.
+*   **Conexión de salida:** Instancia `GetController` y ejecuta `$response->getData($table)`. No interactúa directamente con el modelo ni realiza la codificación JSON, delegando esto al controlador.
 
 ### 5. `controllers/get.controller.php` (El cerebro de las peticiones GET)
-*   **Propósito:** Clase `GetController` que administra y valida las peticiones GET. En una API real, aquí verificarías si el usuario tiene permisos, si la tabla existe en una lista blanca de seguridad, o si los parámetros son correctos antes de ir a la Base de Datos.
-*   **Conexión de entrada:** Llama sus métodos estáticos desde `routes/services/get.php`.
-*   **Conexión de salida:** Solicita la información al modelo llamando a `GetModel::getData()`.
+*   **Propósito:** [Cambio por IA] Clase `GetController` que procesa y valida las peticiones GET. Incluye su propio modelo de dependencia (`models/get.model.php`). Se encarga de invocar al modelo, recibir el resultado y ejecutar el método `fncResponse($response)` para emitir la respuesta en formato JSON con el código de estado HTTP correspondiente.
+*   **Conexión de entrada:** Instanciado y ejecutado desde `routes/services/get.php`.
+*   **Conexión de salida:** Llama a `GetModel::getData($table)`, procesa los datos y los envía al cliente mediante `fncResponse()`.
 
 ### 6. `models/get.model.php` (El puente seguro con la BD)
 *   **Propósito:** Clase `GetModel` encargada de armar y ejecutar las consultas SQL en la base de datos de manera segura mediante sentencias preparadas de PDO.
-*   **Conexión de entrada:** Llamado por `GetController::getData()`.
+*   **Conexión de entrada:** [Cambio por IA] Requerido por `GetController` y llamado a través de `GetModel::getData()`.
 *   **Conexión de salida:**
     *   Usa la conexión establecida en `models/connection.php`.
     *   Devuelve un arreglo estructurado con los datos de las tablas al controlador.

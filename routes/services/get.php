@@ -12,20 +12,13 @@
 require_once "controllers/get.controller.php";
 //require_once "models/get.model.php";
 
-$table = $routesArray[1]; // Nombre de la tabla extraída de la URL
+$table = explode("?", $routesArray[1])[0]; // con explode se genera un array separado por ? y se captura el primer indice que es la tabla a consultar
+
+
+// preguntamos si viene un variable select de la url con el operaddro ternario
+$select = (isset($_GET['select'])) ? $_GET['select'] : "*"; // Columnas a seleccionar (todas por defecto)
 
 // Solicita la información al Controlador
 $response = new GetController(); // se instacia la clase para obtener la funcion getData
-$response -> getData($table); // se ejecuta la funcion getData
+$response -> getData($table, $select); // se ejecuta la funcion getData
 
-// Estructura de respuesta HTTP JSON
-// if(!empty($response)){
-
-// }
-   
-// } else {
-//     $json = array (
-//         'status' => 404,
-//         'result' => 'No se encontraron registros en la tabla: ' . htmlspecialchars($table, ENT_QUOTES, 'UTF-8')
-//     );
-// }
