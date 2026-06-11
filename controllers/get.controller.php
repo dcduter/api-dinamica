@@ -25,12 +25,13 @@ class GetController{
      */
 
     /* ========= peticiones sin filtro ========= */
-    static public function getData($table, $select){
+
+    static public function getData($table, $select, $orderBy, $orderMode, $startAt, $endAt){
         // se recive $select de la vista oseea get.php
       // se envia a get.model.php
       
       /* SE PIDE UN RESPUESTA DEL MODELO get.model.php */
-      $response = GetModel::getData($table, $select);
+      $response = GetModel::getData($table, $select, $orderBy, $orderMode, $startAt, $endAt);
       // lo devolvemos a routes/get.php
       // se retorna una nueva clase de getcontroller y se ejecuta el metodo fncResponse
       $return = new GetController();
@@ -39,12 +40,12 @@ class GetController{
         
     }
      /* ========= peticiones con filtro ========= */
-    static public function getDataFilter($table, $select, $linkTo, $equalTo){
+    static public function getDataFilter($table, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt){
         // se recive $select de la vista oseea get.php
       // se envia a get.model.php
       
       /* SE PIDE UN RESPUESTA DEL MODELO get.model.php */
-      $response = GetModel::getDataFilter($table, $select, $linkTo, $equalTo);
+      $response = GetModel::getDataFilter($table, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt);
       // lo devolvemos a el modelo y este a get.php
       // se retorna una nueva clase de getcontroller y se ejecuta el metodo fncResponse
       $return = new GetController();
