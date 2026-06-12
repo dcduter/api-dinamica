@@ -13,7 +13,7 @@ require_once "connection.php";
  * @category Model
  * @package  Models
  */
-class GetModel {
+class GetModel { 
 
     /**
      * Obtiene todos los registros de una tabla de base de datos específica de forma dinámica.
@@ -57,7 +57,7 @@ class GetModel {
         
         return $stmt->fetchAll(PDO::FETCH_CLASS); 
     }
-    
+
     /* ========= peticiones con filtro ========= */
 
     static public function getDataFilter($table, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt){
@@ -121,6 +121,56 @@ class GetModel {
         $stmt->execute(); 
 
         // Obtenemos los resultados como objetos y los retornamos al controlador.
+        return $stmt->fetchAll(PDO::FETCH_CLASS); 
+    }
+
+     /* ========= peticiones GET sin filtro entre tablas relacionadas ========= */
+
+    static public function getRelData($rel, $type, $select,$orderBy, $orderMode, $startAt, $endAt){
+
+        // reparamos por "," los datos de rel y type
+        $relArray = explode(",", $rel);
+        $typeArray = explode(",", $type);
+        $innerJoinText = ""; // para que sea usado por el if del array
+        
+        
+
+        if (count($relArray ) > 1){
+            
+            foreach ($relArray as $key => $value){
+                // El primer elemento se maneja directamente en el SQL, los siguientes llevan 'AND'
+                if($key > 0 ){
+                    // Construimos la parte SQL: "AND columna = :columna"
+                    // Usamos marcadores de posición (ej: :nombre_columna) para seguridad.
+                    $innerJoinText .= "inner join ".$value." on ".$relArray[0].".id_".$typeArray[$key]."_".$typeArray[0]." = ".$value.".id_".$typeArray[$key]." ";
+                }
+            }
+        }
+        
+        //la consulta se prepara de forma dinamica con $select que viene desde el controlador y este desde get.php
+        // SIN ORDENAR NI LIMITAR DATOS
+        $sql = "SELECT $select FROM $relArray[0] $innerJoinText";
+
+        // si orderBy y orderMode no son nulos se añade a la consulta sql, starAt y endAt en null para no limitar los datos, solo ordenarlos
+        if($orderBy != null && $orderMode != null && $startAt == null && $endAt == null){ 
+            $sql .= " ORDER BY $orderBy $orderMode";
+        }
+
+        // ordenar y limitar datos
+           if($orderBy != null && $orderMode != null && $startAt != null && $endAt != null){ 
+            $sql .= " ORDER BY $orderBy $orderMode LIMIT $startAt, $endAt";
+        }
+
+        // limitar los datos sin ordenarlos
+           if($orderBy == null && $orderMode == null && $startAt != null && $endAt != null){ 
+            $sql .= " LIMIT $startAt, $endAt";
+        }
+        
+        // preparación de la sentencia sql
+        $stmt = Connection::connectDataBase()->prepare($sql); 
+        
+        $stmt->execute(); 
+        
         return $stmt->fetchAll(PDO::FETCH_CLASS); 
     }
 }  // se entrega al controlador

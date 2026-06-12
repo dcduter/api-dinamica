@@ -42,7 +42,15 @@ $endAt = (isset($_GET["endAt"])) ? $_GET["endAt"] : null;
 // se pregunta si viene el GET con linkTo y equalTo
 if(isset($_GET['linkTo']) && isset($_GET['equalTo'])){
     
-    $response -> getDataFilter($table, $select, $_GET["linkTo"], $_GET["equalTo"], $orderBy, $orderMode, $startAt, $endAt); // se ejecuta la funcion getData      
+    $response -> getDataFilter($table, $select, $_GET["linkTo"], $_GET["equalTo"], $orderBy, $orderMode, $startAt, $endAt); // se ejecuta la funcion getData
+    
+
+    //------------------------------------------------------------------------------------------------- 
+/*  === peticiones get si filtro entre tablas relacionadas === */
+// si trae el parmetros de rel y type y la table es relations se ejecuta sis filtros
+}else if(isset($_GET['rel']) && isset($_GET['type']) && $table == "relations" && !isset($_GET['linkTo']) && !isset($_GET['equalTo'])){
+
+     $response -> getRelData($_GET['rel'], $_GET['type'], $select, $orderBy, $orderMode, $startAt, $endAt);
 
 }else{
     /* ========= peticiones sin filtro ========= */

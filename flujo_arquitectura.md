@@ -26,21 +26,21 @@ sequenceDiagram
     participant Conn as 🔌 Connection<br/>(models/connection.php)
     database DB as 🗄️ Base de Datos
 
-    Cliente->>Index: 1. GET /usuarios?select=nombre,email&linkTo=status&equalTo=activo&orderBy=id&orderMode=DESC
+    Cliente->>Index: 1. GET /usuarios?select=nombre,email&linkTo=status&equalTo=activo&orderBy=id&orderMode=DESC&startAt=0&endAt=5
     Index->>RoutesCtrl: 2. Crea instancia y llama a index()
     RoutesCtrl->>Routes: 3. Incluye el enrutador principal (include)
     Note over Routes: Evalúa la URL y el método HTTP (GET)
     Routes->>GetService: 4. Incluye el servicio GET (include)
-    Note over GetService: Extrae parámetros $_GET (select, orderBy, orderMode, linkTo, equalTo)
+    Note over GetService: Valida y extrae parámetros $_GET (select, orderBy, orderMode, linkTo, equalTo, startAt, endAt)
     
     alt ¿Vienen parámetros de filtro (linkTo y equalTo)?
-        GetService->>GetCtrl: 5a. Llama a getDataFilter($table, $select, $linkTo, $equalTo, $orderBy, $orderMode)
+        GetService->>GetCtrl: 5a. Llama a getDataFilter($table, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt)
         GetCtrl->>GetModel: 6a. Llama a GetModel::getDataFilter(...)
-        Note over GetModel: Procesa filtros, prepara placeholders (:param)<br/>y concatena ORDER BY
+        Note over GetModel: Procesa filtros, prepara placeholders (:param)<br/>y concatena ORDER BY y LIMIT
     else No vienen parámetros de filtro
-        GetService->>GetCtrl: 5b. Llama a getData($table, $select, $orderBy, $orderMode)
+        GetService->>GetCtrl: 5b. Llama a getData($table, $select, $orderBy, $orderMode, $startAt, $endAt)
         GetCtrl->>GetModel: 6b. Llama a GetModel::getData(...)
-        Note over GetModel: Concatena SELECT y ORDER BY si aplican
+        Note over GetModel: Concatena SELECT, ORDER BY y LIMIT si aplican
     end
 
     GetModel->>Conn: 7. Llama a Connection::connectDataBase()
@@ -79,15 +79,17 @@ Además del diagrama de secuencia, aquí tienes una representación visual del m
 *   **Conexión de salida:** Si es una petición `GET`, incluye el servicio específico en `routes/services/get.php`.
 
 ### 4. [get.php](file:///c:/wamp64/www/apirest-dinamica/routes/services/get.php) (El integrador del servicio GET)
-*   **Propósito:** *[Cambio por IA]* Procesa específicamente las peticiones de lectura (`GET`). Realiza la extracción y saneamiento básico de los siguientes parámetros provenientes de la URL:
+*   **Propósito:** *[Cambio por IA]* Procesa específicamente las peticiones de lectura (`GET`). Realiza la extracción de parámetros desde la URL de forma segura utilizando comprobaciones `isset()` para evitar advertencias del tipo "Undefined array key" cuando no se envían datos opcionales:
     *   **Tabla:** Extraída eliminando la query string (`explode('?', $routesArray[1])[0]`).
-    *   `$select`: Columnas a consultar (obtenida de `$_GET['select']`, por defecto `*`).
-    *   `$orderBy`: Columna por la cual ordenar (obtenida de `$_GET['orderBy']`, por defecto `null`).
-    *   `$orderMode`: Dirección de ordenamiento (obtenida de `$_GET['orderMode']`, por defecto `null`).
+    *   `$select`: Columnas a consultar (obtenida de `$_GET['select']` si existe; por defecto `*`).
+    *   `$orderBy`: Columna por la cual ordenar (obtenida de `$_GET['orderBy']` si existe; por defecto `null`).
+    *   `$orderMode`: Dirección de ordenamiento (obtenida de `$_GET['orderMode']` si existe; por defecto `null`).
+    *   `$startAt`: Índice de inicio de paginación (obtenida de `$_GET['startAt']` si existe; por defecto `null`).
+    *   `$endAt`: Cantidad de registros a limitar (obtenida de `$_GET['endAt']` si existe; por defecto `null`).
 *   **Flujo de Control:**
     *   Evalúa si el cliente envió parámetros de filtro en la URL (`linkTo` y `equalTo`).
-    *   **Con Filtro:** Llama a `$response->getDataFilter($table, $select, $_GET["linkTo"], $_GET["equalTo"], $orderBy, $orderMode)`.
-    *   **Sin Filtro:** Llama a `$response->getData($table, $select, $orderBy, $orderMode)`.
+    *   **Con Filtro:** Llama a `$response->getDataFilter($table, $select, $_GET["linkTo"], $_GET["equalTo"], $orderBy, $orderMode, $startAt, $endAt)`.
+    *   **Sin Filtro:** Llama a `$response->getData($table, $select, $orderBy, $orderMode, $startAt, $endAt)`.
 *   **Conexión de entrada:** Incluido por `routes/routes.php`.
 *   **Conexión de salida:** Instancia `GetController` e invoca sus métodos.
 
