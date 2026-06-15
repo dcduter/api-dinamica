@@ -54,10 +54,73 @@ class GetController
     }
 
     /* ========= Peticiones GET sin filtro entre tablas relacionadas ========= */
-    
-    static public function getRelData ($rel, $type, $select, $orderBy, $orderMode, $startAt, $endAt) {
+
+    static public function getRelData($rel, $type, $select, $orderBy, $orderMode, $startAt, $endAt)
+    {
         /* Se pide una respuesta del modelo get.model.php */
         $response = GetModel::getRelData($rel, $type, $select, $orderBy, $orderMode, $startAt, $endAt);
+
+        // Se devuelve la respuesta al modelo y este a get.php
+        // Se retorna una nueva clase de GetController y se ejecuta el método fncResponse
+        $return = new GetController();
+        $return->fncResponse($response);  // Se pasa la respuesta del modelo
+    }
+    /* ========= Peticiones GET con filtro entre tablas relacionadas ========= */
+
+    static public function getRelDataFilter($rel, $type, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt)
+    {
+        /* Se pide una respuesta del modelo get.model.php */
+        $response = GetModel::getRelDataFilter($rel, $type, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt);
+
+        // Se devuelve la respuesta al modelo y este a get.php
+        // Se retorna una nueva clase de GetController y se ejecuta el método fncResponse
+        $return = new GetController();
+        $return->fncResponse($response);  // Se pasa la respuesta del modelo
+    }
+
+    /* ============= Peticiones GET para el buscador sin relaciones ============= */
+    static public function getDataSearch($table, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt)
+    {
+        // Se recibe $select de la vista (get.php)
+        // Se envía a get.model.php
+
+        /* Se pide una respuesta del modelo get.model.php */
+        $response = GetModel::getDataSearch($table, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt);
+
+        // Se devuelve la respuesta al modelo y este a get.php
+        // Se retorna una nueva clase de GetController y se ejecuta el método fncResponse
+        $return = new GetController();
+        $return->fncResponse($response);  // Se pasa la respuesta del modelo
+    }
+
+    /* ========= Peticiones GET para el buscador entre tablas relacionadas ========= */
+
+    static public function getRelDataSearch($rel, $type, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt)
+    {
+        /* Se pide una respuesta del modelo get.model.php */
+        $response = GetModel::getRelDataSearch($rel, $type, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt);
+
+        // Se devuelve la respuesta al modelo y este a get.php
+        // Se retorna una nueva clase de GetController y se ejecuta el método fncResponse
+        $return = new GetController();
+        $return->fncResponse($response);  // Se pasa la respuesta del modelo
+    }
+
+    /* ============= Peticiones GET para selecion de rangos ============= */
+    static public function getDataRange($table, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo) {
+        /* Se envia una respuesta del modelo get.model.php */
+        $response = GetModel::getDataRange($table, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo);
+
+        // Se devuelve la respuesta al modelo y este a get.php
+        // Se retorna una nueva clase de GetController y se ejecuta el método fncResponse
+        $return = new GetController();
+        $return->fncResponse($response);  // Se pasa la respuesta del modelo
+    }
+
+    /* ============= Peticiones GET para selecion de rangos con relaciones ============= */
+    static public function getRelDataRange($rel, $type, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo) {
+        /* Se envia una respuesta del modelo get.model.php */
+        $response = GetModel::getRelDataRange($rel, $type, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo);
 
         // Se devuelve la respuesta al modelo y este a get.php
         // Se retorna una nueva clase de GetController y se ejecuta el método fncResponse

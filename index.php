@@ -21,6 +21,6 @@ require_once "controllers/routes.contoller.php";
 //  se instacio la una clase nueva
 $index = new routesController();
 
-// se llama al metodo index
+// se llama al metodo index con la variable $index
 $index->index();
 ?>

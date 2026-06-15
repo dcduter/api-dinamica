@@ -23,7 +23,7 @@ class Connection{
 static public function infoDataBase(){ // se usa static para que el metodo pueda ser llamado sin instanciar la clase 
 
     $infoDB = array (
-        "database" => "database-1",
+        "database" => "database-2",
         "user" => "root",
         "pass" => ""
     );
