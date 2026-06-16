@@ -32,6 +32,14 @@ class GetModel
 
     static public function getData($table, $select, $orderBy, $orderMode, $startAt, $endAt)
     {
+        // Validacion si existe la tabla y las columnas
+        $selectArray = explode(",", $select);
+        if (!Connection::getColumnsData($table, $selectArray)) {
+            return null;
+        }
+
+
+
 
         //la consulta se prepara de forma dinamica con $select que viene desde el controlador y este desde get.php
         // SIN ORDENAR NI LIMITAR DATOS
@@ -53,21 +61,41 @@ class GetModel
         }
 
         // preparación de la sentencia sql
-        $stmt = Connection::connectDataBase()->prepare($sql);
-
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_CLASS);
+        try {
+            $stmt = Connection::connectDataBase()->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_CLASS);
+        } catch (PDOException $e) {
+            // [Cambio por IA] Capturamos el error para no mostrar detalles técnicos al usuario.
+            error_log("Error SQL en getData: " . $e->getMessage());
+            return null;
+        }
     }
 
     /* ========= peticiones con filtro ========= */
 
     static public function getDataFilter($table, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt)
     {
+        // [Cambio por IA] Validacion si existe la tabla y las columnas
+        $selectArray = explode(",", $select);
+        $linkToArray = explode(",", $linkTo);
+
+        // se pone en un array para que no haga una matris completa
+        foreach ($linkToArray as $key => $value) {
+            array_push($selectArray, $value);
+        }
+
+        // quita los elementos duplicados
+        $selectArray = array_unique($selectArray);
+
+
+        if (!Connection::getColumnsData($table, $selectArray)) {
+            return null;
+        }
 
         // Transformamos los parámetros de cadena a arreglos para procesarlos individualmente.
         // Ejemplo: "col1,col2" -> ["col1", "col2"]
-        $linkToArray = explode(",", $linkTo);
+        //  $linkToArray = explode(",", $linkTo);
 
         // Transformamos los valores de filtro de cadena a arreglo.
         // Se separan por "_" según la convención establecida para los valores de filtro.
@@ -121,16 +149,26 @@ class GetModel
         }
 
         // Ejecutamos la consulta ya armada y con los valores vinculados.
-        $stmt->execute();
-
-        // Obtenemos los resultados como objetos y los retornamos al controlador.
-        return $stmt->fetchAll(PDO::FETCH_CLASS);
+        try {
+            $stmt->execute();
+            // Obtenemos los resultados como objetos y los retornamos al controlador.
+            return $stmt->fetchAll(PDO::FETCH_CLASS);
+        } catch (PDOException $e) {
+            // [Cambio por IA] Capturamos el error para no mostrar detalles técnicos al usuario.
+            error_log("Error SQL en getDataFilter: " . $e->getMessage());
+            return null;
+        }
     }
 
     /* ========= peticiones GET sin filtro entre tablas relacionadas ========= */
 
     static public function getRelData($rel, $type, $select, $orderBy, $orderMode, $startAt, $endAt)
     {
+        // [Cambio por IA] Validacion si existen las tablas y las columnas de la relacion
+        $selectArray = explode(",", $select);
+        if (!self::validateFieldsRelation($rel, $selectArray)) {
+            return null;
+        }
 
         // reparamos por "," los datos de rel y type
         $relArray = explode(",", $rel);
@@ -171,16 +209,31 @@ class GetModel
         }
 
         // preparación de la sentencia sql
-        $stmt = Connection::connectDataBase()->prepare($sql);
-
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_CLASS);
+        try {
+            $stmt = Connection::connectDataBase()->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_CLASS);
+        } catch (PDOException $e) {
+            // [Cambio por IA] Capturamos el error para no mostrar detalles técnicos al usuario.
+            error_log("Error SQL en getRelData: " . $e->getMessage());
+            return null;
+        }
     }
 
     /* ========= peticiones GET con filtro entre tablas relacionadas ========= */
     static public function getRelDataFilter($rel, $type, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt)
     {
+        // [Cambio por IA] Validacion si existen las tablas y las columnas de la relacion
+        $selectArray = explode(",", $select);
+        $linkToArray = explode(",", $linkTo);
+        foreach ($linkToArray as $value) {
+            array_push($selectArray, $value);
+        }
+        $selectArray = array_unique($selectArray);
+
+        if (!self::validateFieldsRelation($rel, $selectArray)) {
+            return null;
+        }
 
         // ----- Orgarnizamos lo filtros -----
 
@@ -246,17 +299,23 @@ class GetModel
             }
 
             // preparación de la sentencia sql
-            $stmt = Connection::connectDataBase()->prepare($sql);
+            try {
+                $stmt = Connection::connectDataBase()->prepare($sql);
 
-            foreach ($linkToArray as $key => $value) {
-                // bindParam sustituye el marcador (ej: :columna) por el valor real del filtro.
-                // PDO::PARAM_STR asegura que el dato se trate como cadena.
-                $stmt->bindParam(":" . $value, $equalToArray[$key], PDO::PARAM_STR);
+                foreach ($linkToArray as $key => $value) {
+                    // bindParam sustituye el marcador (ej: :columna) por el valor real del filtro.
+                    // PDO::PARAM_STR asegura que el dato se trate como cadena.
+                    $stmt->bindParam(":" . $value, $equalToArray[$key], PDO::PARAM_STR);
+                }
+
+                $stmt->execute();
+
+                return $stmt->fetchAll(PDO::FETCH_CLASS);
+            } catch (PDOException $e) {
+                // [Cambio por IA] Capturamos el error para no mostrar detalles técnicos al usuario.
+                error_log("Error SQL en getRelDataFilter: " . $e->getMessage());
+                return null;
             }
-
-            $stmt->execute();
-
-            return $stmt->fetchAll(PDO::FETCH_CLASS);
 
         } else {
             return null;
@@ -267,6 +326,17 @@ class GetModel
 
     static public function getDataSearch($table, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt)
     {
+        // [Cambio por IA] Validacion si existe la tabla y las columnas
+        $selectArray = explode(",", $select);
+        $linkToArray = explode(",", $linkTo);
+        foreach ($linkToArray as $value) {
+            array_push($selectArray, $value);
+        }
+        $selectArray = array_unique($selectArray);
+
+        if (!Connection::getColumnsData($table, $selectArray)) {
+            return null;
+        }
 
         // Transformamos los parámetros de cadena a arreglos para procesarlos individualmente.
         // Ejemplo: "col1,col2" -> ["col1", "col2"]
@@ -312,34 +382,51 @@ class GetModel
         }
 
         // preparación de la sentencia sql
-        $stmt = Connection::connectDataBase()->prepare($sql);
+        try {
+            $stmt = Connection::connectDataBase()->prepare($sql);
 
-        // se hace el foreach para arme la 
-        foreach ($linkToArray as $key => $value) {
+            // se hace el foreach para arme la 
+            foreach ($linkToArray as $key => $value) {
 
-            // pone en un if para que no tenga encuenta el indice 0, para evitar errores de logica
-            if ($key > 0) {
-                $stmt->bindParam(":" . $value, $searchToArray[$key], PDO::PARAM_STR);
+                // pone en un if para que no tenga encuenta el indice 0, para evitar errores de logica
+                if ($key > 0) {
+                    $stmt->bindParam(":" . $value, $searchToArray[$key], PDO::PARAM_STR);
+                }
             }
+
+            // Construimos el patrón LIKE con wildcard (%) al inicio y al final.
+            // Esto permite buscar el término en cualquier parte de la cadena.
+            // $searchParam = "%" . $search . "%";
+
+            // Vinculamos el valor a la variable de marcador :search.
+            // PDO::PARAM_STR asegura que se maneje como texto.
+            //  $stmt->bindParam(":search", $searchParam, PDO::PARAM_STR);
+
+            $stmt->execute();
+
+            return $stmt->fetchAll(PDO::FETCH_CLASS);
+        } catch (PDOException $e) {
+            // [Cambio por IA] Capturamos el error para no mostrar detalles técnicos al usuario.
+            error_log("Error SQL en getDataSearch: " . $e->getMessage());
+            return null;
         }
-
-        // Construimos el patrón LIKE con wildcard (%) al inicio y al final.
-        // Esto permite buscar el término en cualquier parte de la cadena.
-        // $searchParam = "%" . $search . "%";
-
-        // Vinculamos el valor a la variable de marcador :search.
-        // PDO::PARAM_STR asegura que se maneje como texto.
-        //  $stmt->bindParam(":search", $searchParam, PDO::PARAM_STR);
-
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_CLASS);
 
     }
 
     /* ========= Peticiones GET para el buscador entre tablas relacionadas ========= */
     static public function getRelDataSearch($rel, $type, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt)
     {
+        // [Cambio por IA] Validacion si existen las tablas y las columnas de la relacion
+        $selectArray = explode(",", $select);
+        $linkToArray = explode(",", $linkTo);
+        foreach ($linkToArray as $value) {
+            array_push($selectArray, $value);
+        }
+        $selectArray = array_unique($selectArray);
+
+        if (!self::validateFieldsRelation($rel, $selectArray)) {
+            return null;
+        }
 
         // ----- Orgarnizamos lo filtros -----
 
@@ -405,20 +492,26 @@ class GetModel
             }
 
             // preparación de la sentencia sql
-            $stmt = Connection::connectDataBase()->prepare($sql);
+            try {
+                $stmt = Connection::connectDataBase()->prepare($sql);
 
-            foreach ($linkToArray as $key => $value) {
-                // bindParam sustituye el marcador (ej: :columna) por el valor real del filtro.
-                // PDO::PARAM_STR asegura que el dato se trate como cadena.
-                if ($key > 0){
-                    // [Cambio por IA] Se corrigió la variable $searchArray a $searchToArray
-                    $stmt->bindParam(":".$value, $searchToArray[$key], PDO::PARAM_STR);
+                foreach ($linkToArray as $key => $value) {
+                    // bindParam sustituye el marcador (ej: :columna) por el valor real del filtro.
+                    // PDO::PARAM_STR asegura que el dato se trate como cadena.
+                    if ($key > 0) {
+                        // [Cambio por IA] Se corrigió la variable $searchArray a $searchToArray
+                        $stmt->bindParam(":" . $value, $searchToArray[$key], PDO::PARAM_STR);
+                    }
                 }
+
+                $stmt->execute();
+
+                return $stmt->fetchAll(PDO::FETCH_CLASS);
+            } catch (PDOException $e) {
+                // [Cambio por IA] Capturamos el error para no mostrar detalles técnicos al usuario.
+                error_log("Error SQL en getRelDataSearch: " . $e->getMessage());
+                return null;
             }
-
-            $stmt->execute();
-
-            return $stmt->fetchAll(PDO::FETCH_CLASS);
 
         } else {
             return null;
@@ -426,8 +519,23 @@ class GetModel
     }
 
     /* ============= modelo peticiones GET para selecion de rangos ============= */
-    static public function getDataRange($table, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo) {
-        
+    static public function getDataRange($table, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo)
+    {
+        // [Cambio por IA] Validacion si existe la tabla y las columnas
+        $selectArray = explode(",", $select);
+        $linkToArray = explode(",", $linkTo);
+        foreach ($linkToArray as $value) {
+            array_push($selectArray, $value);
+        }
+        if ($filterTo != null) {
+            array_push($selectArray, $filterTo);
+        }
+        $selectArray = array_unique($selectArray);
+
+        if (!Connection::getColumnsData($table, $selectArray)) {
+            return null;
+        }
+
         // $linkToArray = explode(",", $linkTo);
         // $between1Array = explode(",", $between1);
         // $between2Array = explode(",", $between2);
@@ -442,26 +550,26 @@ class GetModel
         //         }
         //     }
         // }
-        $filter= "";
-         if($filterTo != null && $inTo != null){
-          
-           $filter .= " AND $filterTo IN ($inTo)";  
+        $filter = "";
+        if ($filterTo != null && $inTo != null) {
 
-         }
-            // -- sin ordenar ni limitar datos --
+            $filter .= " AND $filterTo IN ($inTo)";
+
+        }
+        // -- sin ordenar ni limitar datos --
         $sql = "SELECT $select FROM $table WHERE $linkTo BETWEEN '$between1' AND '$between2' $filter";
 
-            // -- ordenar datos sin limitar --
+        // -- ordenar datos sin limitar --
         if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
             $sql .= " ORDER BY $orderBy $orderMode";
         }
 
-            // -- ordenar y limitar datos --
+        // -- ordenar y limitar datos --
         if ($orderBy != null && $orderMode != null && $startAt != null && $endAt != null) {
             $sql .= " ORDER BY $orderBy $orderMode LIMIT $startAt, $endAt";
         }
 
-            // -- limitar datos sin ordenar --
+        // -- limitar datos sin ordenar --
         if ($orderBy == null && $orderMode == null && $startAt != null && $endAt != null) {
             $sql .= " LIMIT $startAt, $endAt";
         }
@@ -474,20 +582,41 @@ class GetModel
         //     }
         // }
 
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_CLASS);
+        try {
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_CLASS);
+        } catch (PDOException $e) {
+            // [Cambio por IA] Capturamos el error para no mostrar detalles técnicos al usuario.
+            error_log("Error SQL en getDataRange: " . $e->getMessage());
+            return null;
+        }
     }
     /* ============= modelo peticiones GET para selecion de rangos con relaciones ============= */
-    static public function getRelDataRange($rel, $type, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo) {
+    static public function getRelDataRange($rel, $type, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo)
+    {
+        // [Cambio por IA] Validacion si existen las tablas y las columnas de la relacion
+        $selectArray = explode(",", $select);
+        $linkToArray = explode(",", $linkTo);
+        foreach ($linkToArray as $value) {
+            array_push($selectArray, $value);
+        }
+        if ($filterTo != null) {
+            array_push($selectArray, $filterTo);
+        }
+        $selectArray = array_unique($selectArray);
 
-          $filter= "";
-         if($filterTo != null && $inTo != null){
-          
-           $filter .= " AND $filterTo IN ($inTo)";  
+        if (!self::validateFieldsRelation($rel, ["*"])) {
+            return null;
+        }
 
-         }
-        
+        $filter = "";
+        // si el dirents de $filterTo y $inTo no es nulo se concatena los valores de $filterTo y $inTo para formar el where
+        if ($filterTo != null && $inTo != null) {
+
+            $filter .= " AND $filterTo IN ($inTo)";
+
+        }
+
         $relArray = explode(",", $rel);
         $typeArray = explode(",", $type);
         $innerJoinText = "";
@@ -498,43 +627,109 @@ class GetModel
             foreach ($relArray as $key => $value) {
                 if ($key > 0) {
                     // se concatena los valores de $relArray y $typeArray para formar el inner join con la condicion de la llave foranea
-                    $innerJoinText .= "inner join " .$value." on ".$relArray[0].".id_".$typeArray[$key]."_".$typeArray[0]." = ".$value.".id_".$typeArray[$key]." ";
+                    $innerJoinText .= "inner join " . $value . " on " . $relArray[0] . ".id_" . $typeArray[$key] . "_" . $typeArray[0] . " = " . $value . ".id_" . $typeArray[$key] . " ";
                 }
             }
-        
-      
+
+
             // -- sin ordenar ni limitar datos --
-        $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkTo BETWEEN '$between1' AND '$between2' $filter";
+            $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkTo BETWEEN '$between1' AND '$between2' $filter";
 
             // -- ordenar datos sin limitar --
-        if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
-            $sql .= " ORDER BY $orderBy $orderMode";
-        }
+            if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
+                $sql .= " ORDER BY $orderBy $orderMode";
+            }
 
             // -- ordenar y limitar datos --
-        if ($orderBy != null && $orderMode != null && $startAt != null && $endAt != null) {
-            $sql .= " ORDER BY $orderBy $orderMode LIMIT $startAt, $endAt";
-        }
+            if ($orderBy != null && $orderMode != null && $startAt != null && $endAt != null) {
+                $sql .= " ORDER BY $orderBy $orderMode LIMIT $startAt, $endAt";
+            }
 
             // -- limitar datos sin ordenar --
-        if ($orderBy == null && $orderMode == null && $startAt != null && $endAt != null) {
-            $sql .= " LIMIT $startAt, $endAt";
-        }
+            if ($orderBy == null && $orderMode == null && $startAt != null && $endAt != null) {
+                $sql .= " LIMIT $startAt, $endAt";
+            }
 
-        $stmt = Connection::connectDataBase()->prepare($sql);
+            $stmt = Connection::connectDataBase()->prepare($sql);
 
-        // foreach ($linkToArray as $key => $value) {
-        //     if ($key > 0) {
-        //         $stmt->bindParam(":" . $value, $between1Array[$key], PDO::PARAM_STR);
-        //     }
-        // }
+            // foreach ($linkToArray as $key => $value) {
+            //     if ($key > 0) {
+            //         $stmt->bindParam(":" . $value, $between1Array[$key], PDO::PARAM_STR);
+            //     }
+            // }
 
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_CLASS);
-        }else{
+            try {
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_CLASS);
+            } catch (PDOException $e) {
+                // [Cambio por IA] Capturamos el error para no mostrar detalles técnicos al usuario.
+                error_log("Error SQL en getRelDataRange: " . $e->getMessage());
+                return null;
+            }
+        } else {
             return null;
         }
+    }
+
+    /**
+     * [Cambio por IA]
+     * Valida que las tablas y columnas de una relación existan en la base de datos.
+     * 
+     * @param string $rel Tablas de la relación separadas por comas.
+     * @param array $fields Columnas a validar.
+     * @return bool True si son válidas, false de lo contrario.
+     */
+    static private function validateFieldsRelation($rel, $fields)
+    {
+        $relArray = array_map('trim', explode(',', $rel));
+        $tableColumns = [];
+
+        // Obtener las columnas de cada tabla
+        foreach ($relArray as $table) {
+            // Pasamos un array vacío ya que Connection::getColumnsData ahora requiere array de columnas para contar/comparar
+            $cols = Connection::getColumnsData($table, []);
+            if (!$cols) {
+                return false;
+            }
+            $tableColumns[$table] = array_map(function($c) {
+                return $c->item;
+            }, $cols);
+        }
+
+        // Filtrar y validar las columnas
+        foreach ($fields as $field) {
+            $field = trim($field);
+            if ($field === '*' || empty($field)) {
+                continue;
+            }
+
+            // Limpiar alias
+            $parts = preg_split('/\s+/', $field);
+            $fieldClean = $parts[0];
+
+            if (strpos($fieldClean, '.') !== false) {
+                list($tName, $cName) = explode('.', $fieldClean);
+                $tName = trim($tName);
+                $cName = trim($cName);
+
+                if (!isset($tableColumns[$tName]) || !in_array($cName, $tableColumns[$tName])) {
+                    return false;
+                }
+            } else {
+                $found = false;
+                foreach ($tableColumns as $tName => $cols) {
+                    if (in_array($fieldClean, $cols)) {
+                        $found = true;
+                        break;
+                    }
+                }
+                if (!$found) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
 } // se entrega al controlador

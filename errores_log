@@ -58,3 +58,316 @@ Stack trace:
 #5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
 #6 {main}
   thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 477
+[15-Jun-2026 07:34:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method Connection::connect() in C:\wamp64\www\apirest-dinamica\models\connection.php:105
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(36): Connection::getColumnsData('courses')
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(33): GetModel::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(79): GetController::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\connection.php on line 105
+[15-Jun-2026 15:48:33 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method Connection::connect() in C:\wamp64\www\apirest-dinamica\models\connection.php:107
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(37): Connection::getColumnsData('courses')
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(33): GetModel::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(79): GetController::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\connection.php on line 107
+[15-Jun-2026 15:49:29 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method Connection::connect() in C:\wamp64\www\apirest-dinamica\models\connection.php:107
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(37): Connection::getColumnsData('courses')
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(33): GetModel::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(79): GetController::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\connection.php on line 107
+[15-Jun-2026 15:53:15 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method Connection::connect() in C:\wamp64\www\apirest-dinamica\models\connection.php:107
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(37): Connection::getColumnsData('courses')
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(33): GetModel::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(79): GetController::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\connection.php on line 107
+[15-Jun-2026 15:59:54 UTC] PHP Parse error:  syntax error, unexpected token "public", expecting "::" in C:\wamp64\www\apirest-dinamica\models\connection.php on line 102
+[15-Jun-2026 16:03:36 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method Connection::connect() in C:\wamp64\www\apirest-dinamica\models\connection.php:113
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(37): Connection::getColumnsData('courses')
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(33): GetModel::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(79): GetController::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\connection.php on line 113
+[15-Jun-2026 16:04:53 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'COLUMN NAME AS item FROM information_schema.columns WHERE table_schema = 'databa' at line 1 in C:\wamp64\www\apirest-dinamica\models\connection.php:115
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\connection.php(115): PDO->query('SELECT COLUMN N...')
+#1 C:\wamp64\www\apirest-dinamica\models\get.model.php(37): Connection::getColumnsData('courses')
+#2 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(33): GetModel::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\services\get.php(79): GetController::getData('courses', 'id_course', NULL, NULL, NULL, NULL)
+#4 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#6 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#7 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\connection.php on line 115
+[15-Jun-2026 16:23:51 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'database-1.courss' doesn't exist in C:\wamp64\www\apirest-dinamica\models\get.model.php:63
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(63): PDOStatement->execute()
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(33): GetModel::getData('courss', 'id_course', NULL, NULL, NULL, NULL)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(79): GetController::getData('courss', 'id_course', NULL, NULL, NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 63
+[15-Jun-2026 16:28:00 UTC] PHP Parse error:  syntax error, unexpected token "return", expecting ")" in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 38
+[15-Jun-2026 17:12:37 UTC] PHP Warning:  Undefined variable $sum in C:\wamp64\www\apirest-dinamica\models\connection.php on line 123
+[15-Jun-2026 17:12:37 UTC] PHP Stack trace:
+[15-Jun-2026 17:12:37 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[15-Jun-2026 17:12:37 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[15-Jun-2026 17:12:37 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[15-Jun-2026 17:12:37 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[15-Jun-2026 17:12:37 UTC] PHP   5. GetController::getData($table = 'courses', $select = 'id_course', $orderBy = NULL, $orderMode = NULL, $startAt = NULL, $endAt = NULL) C:\wamp64\www\apirest-dinamica\routes\services\get.php:79
+[15-Jun-2026 17:12:37 UTC] PHP   6. GetModel::getData($table = 'courses', $select = 'id_course', $orderBy = NULL, $orderMode = NULL, $startAt = NULL, $endAt = NULL) C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:33
+[15-Jun-2026 17:12:37 UTC] PHP   7. Connection::getColumnsData($table = 'courses', $columns = [0 => 'id_course']) C:\wamp64\www\apirest-dinamica\models\get.model.php:37
+[15-Jun-2026 18:04:35 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'courses.id_instructo_course' in 'on clause' in C:\wamp64\www\apirest-dinamica\models\get.model.php:205
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(205): PDOStatement->execute()
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(61): GetModel::getRelData('courses,instruc...', 'course,instruct...', '*', 'id_course', 'ASC', '0', '3')
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(47): GetController::getRelData('courses,instruc...', 'course,instruct...', '*', 'id_course', 'ASC', '0', '3')
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 205
+[15-Jun-2026 18:05:44 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_cours' in 'order clause' in C:\wamp64\www\apirest-dinamica\models\get.model.php:205
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(205): PDOStatement->execute()
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(61): GetModel::getRelData('courses,instruc...', 'course,instruct...', '*', 'id_cours', 'ASC', '0', '3')
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(47): GetController::getRelData('courses,instruc...', 'course,instruct...', '*', 'id_cours', 'ASC', '0', '3')
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 205
+[15-Jun-2026 18:32:52 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'title_courso' in 'order clause' in C:\wamp64\www\apirest-dinamica\models\get.model.php:148
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(148): PDOStatement->execute()
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(48): GetModel::getDataFilter('courses', '*', 'id_instructor_c...', '2', 'title_courso', 'DESC', NULL, NULL)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(40): GetController::getDataFilter('courses', '*', 'id_instructor_c...', '2', 'title_courso', 'DESC', NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 148
+[15-Jun-2026 18:41:37 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'title_courso' in 'order clause' in C:\wamp64\www\apirest-dinamica\models\get.model.php:148
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(148): PDOStatement->execute()
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(48): GetModel::getDataFilter('courses', '*', 'id_instructor_c...', 'a', 'title_courso', 'DESC', NULL, NULL)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(40): GetController::getDataFilter('courses', '*', 'id_instructor_c...', 'a', 'title_courso', 'DESC', NULL, NULL)
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 148
+[15-Jun-2026 18:43:53 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[15-Jun-2026 18:43:53 UTC] PHP Stack trace:
+[15-Jun-2026 18:43:53 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[15-Jun-2026 18:43:53 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[15-Jun-2026 18:43:53 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[15-Jun-2026 18:43:53 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[15-Jun-2026 18:43:53 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[15-Jun-2026 18:43:53 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[15-Jun-2026 18:43:53 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[15-Jun-2026 18:43:53 UTC] PHP   8. Connection::getColumnsData($table = 'courses', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[15-Jun-2026 18:43:53 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[15-Jun-2026 18:43:53 UTC] PHP Stack trace:
+[15-Jun-2026 18:43:53 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[15-Jun-2026 18:43:53 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[15-Jun-2026 18:43:53 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[15-Jun-2026 18:43:53 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[15-Jun-2026 18:43:53 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[15-Jun-2026 18:43:53 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[15-Jun-2026 18:43:53 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[15-Jun-2026 18:43:53 UTC] PHP   8. Connection::getColumnsData($table = 'instructors', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[15-Jun-2026 18:51:36 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[15-Jun-2026 18:51:36 UTC] PHP Stack trace:
+[15-Jun-2026 18:51:36 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[15-Jun-2026 18:51:36 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[15-Jun-2026 18:51:36 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[15-Jun-2026 18:51:36 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[15-Jun-2026 18:51:36 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[15-Jun-2026 18:51:36 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[15-Jun-2026 18:51:36 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[15-Jun-2026 18:51:36 UTC] PHP   8. Connection::getColumnsData($table = 'courses', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[15-Jun-2026 18:51:36 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[15-Jun-2026 18:51:36 UTC] PHP Stack trace:
+[15-Jun-2026 18:51:36 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[15-Jun-2026 18:51:36 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[15-Jun-2026 18:51:36 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[15-Jun-2026 18:51:36 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[15-Jun-2026 18:51:36 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[15-Jun-2026 18:51:36 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[15-Jun-2026 18:51:36 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[15-Jun-2026 18:51:36 UTC] PHP   8. Connection::getColumnsData($table = 'instructors', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[15-Jun-2026 19:17:53 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[15-Jun-2026 19:17:53 UTC] PHP Stack trace:
+[15-Jun-2026 19:17:53 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[15-Jun-2026 19:17:53 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[15-Jun-2026 19:17:53 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[15-Jun-2026 19:17:53 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[15-Jun-2026 19:17:53 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[15-Jun-2026 19:17:53 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[15-Jun-2026 19:17:53 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[15-Jun-2026 19:17:53 UTC] PHP   8. Connection::getColumnsData($table = 'courses', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[15-Jun-2026 19:17:53 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[15-Jun-2026 19:17:53 UTC] PHP Stack trace:
+[15-Jun-2026 19:17:53 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[15-Jun-2026 19:17:53 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[15-Jun-2026 19:17:53 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[15-Jun-2026 19:17:53 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[15-Jun-2026 19:17:53 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[15-Jun-2026 19:17:53 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[15-Jun-2026 19:17:53 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[15-Jun-2026 19:17:53 UTC] PHP   8. Connection::getColumnsData($table = 'instructors', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[15-Jun-2026 23:45:00 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 00:09:48 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 00:10:34 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 01:00:35 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 01:00:43 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 01:02:10 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 01:05:38 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 01:05:56 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 01:06:23 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 02:00:36 UTC] Error de Conexión BD: SQLSTATE[HY000] [2002] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión
+[16-Jun-2026 02:07:58 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:07:58 UTC] PHP Stack trace:
+[16-Jun-2026 02:07:58 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:07:58 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:07:58 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:07:58 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:07:58 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:07:58 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:07:58 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:07:58 UTC] PHP   8. Connection::getColumnsData($table = 'courses', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:07:58 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:07:58 UTC] PHP Stack trace:
+[16-Jun-2026 02:07:58 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:07:58 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:07:58 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:07:58 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:07:58 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:07:58 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:07:58 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:07:58 UTC] PHP   8. Connection::getColumnsData($table = 'instructors', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:11:22 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:11:22 UTC] PHP Stack trace:
+[16-Jun-2026 02:11:22 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:11:22 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:11:22 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:11:22 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:11:22 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:11:22 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:11:22 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:11:22 UTC] PHP   8. Connection::getColumnsData($table = 'courses', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:11:22 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:11:22 UTC] PHP Stack trace:
+[16-Jun-2026 02:11:22 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:11:22 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:11:22 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:11:22 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:11:22 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:11:22 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:11:22 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:11:22 UTC] PHP   8. Connection::getColumnsData($table = 'instructors', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:12:35 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:12:35 UTC] PHP Stack trace:
+[16-Jun-2026 02:12:35 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:12:35 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:12:35 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:12:35 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:12:35 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:12:35 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:12:35 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:12:35 UTC] PHP   8. Connection::getColumnsData($table = 'courses', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:12:35 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:12:35 UTC] PHP Stack trace:
+[16-Jun-2026 02:12:35 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:12:35 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:12:35 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:12:35 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:12:35 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:12:35 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:12:35 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:12:35 UTC] PHP   8. Connection::getColumnsData($table = 'instructors', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:12:35 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function tablename() in C:\wamp64\www\apirest-dinamica\models\get.model.php:163
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(61): GetModel::getRelData('courses,instruc...', 'course,instruct...', '*', 'id_course', 'ASC', '0', '3')
+#1 C:\wamp64\www\apirest-dinamica\routes\services\get.php(47): GetController::getRelData('courses,instruc...', 'course,instruct...', '*', 'id_course', 'ASC', '0', '3')
+#2 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#3 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#5 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 163
+[16-Jun-2026 02:14:03 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:14:03 UTC] PHP Stack trace:
+[16-Jun-2026 02:14:03 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:14:03 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:14:03 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:14:03 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:14:03 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:14:03 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:14:03 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:14:03 UTC] PHP   8. Connection::getColumnsData($table = 'courses', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:14:03 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:14:03 UTC] PHP Stack trace:
+[16-Jun-2026 02:14:03 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:14:03 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:14:03 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:14:03 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:14:03 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:14:03 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:14:03 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:14:03 UTC] PHP   8. Connection::getColumnsData($table = 'instructors', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:19:40 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:19:40 UTC] PHP Stack trace:
+[16-Jun-2026 02:19:40 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:19:40 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:19:40 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:19:40 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:19:40 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:19:40 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:19:40 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:19:40 UTC] PHP   8. Connection::getColumnsData($table = 'courses', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:19:40 UTC] PHP Warning:  Undefined array key 0 in C:\wamp64\www\apirest-dinamica\models\connection.php on line 125
+[16-Jun-2026 02:19:40 UTC] PHP Stack trace:
+[16-Jun-2026 02:19:40 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[16-Jun-2026 02:19:40 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[16-Jun-2026 02:19:40 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[16-Jun-2026 02:19:40 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:34
+[16-Jun-2026 02:19:40 UTC] PHP   5. GetController::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\routes\services\get.php:47
+[16-Jun-2026 02:19:40 UTC] PHP   6. GetModel::getRelData($rel = 'courses,instructors', $type = 'course,instructor', $select = '*', $orderBy = 'id_course', $orderMode = 'ASC', $startAt = '0', $endAt = '3') C:\wamp64\www\apirest-dinamica\controllers\get.controller.php:61
+[16-Jun-2026 02:19:40 UTC] PHP   7. GetModel::validateFieldsRelation($rel = 'courses,instructors', $fields = [0 => '*']) C:\wamp64\www\apirest-dinamica\models\get.model.php:160
+[16-Jun-2026 02:19:40 UTC] PHP   8. Connection::getColumnsData($table = 'instructors', $columns = []) C:\wamp64\www\apirest-dinamica\models\get.model.php:649
+[16-Jun-2026 02:46:06 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'courses.id_instructo_course' in 'on clause' in C:\wamp64\www\apirest-dinamica\models\get.model.php:205
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\get.model.php(205): PDOStatement->execute()
+#1 C:\wamp64\www\apirest-dinamica\controllers\get.controller.php(61): GetModel::getRelData('courses,instruc...', 'course,instruct...', 'id_course', 'id_course', 'ASC', '0', '3')
+#2 C:\wamp64\www\apirest-dinamica\routes\services\get.php(47): GetController::getRelData('courses,instruc...', 'course,instruct...', 'id_course', 'id_course', 'ASC', '0', '3')
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(34): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 205
+[16-Jun-2026 02:56:34 UTC] Error SQL en getRelData: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'courses.id_instructo_course' in 'on clause'
+[16-Jun-2026 02:56:53 UTC] Error SQL en getRelData: SQLSTATE[42000]: Syntax error or access violation: 1327 Undeclared variable: a

@@ -7,6 +7,29 @@ Esta arquitectura sigue una variante del patrón **MVC (Modelo-Vista-Controlador
 *   **Controladores (`controllers/`):** Actúan como el "Cerebro", recibiendo parámetros, controlando la lógica de negocio y comunicando las rutas con los modelos.
 *   **Modelos (`models/`):** Actúan como las "Manos", comunicándose directamente con la base de datos (BD) mediante consultas preparadas en PDO de forma segura.
 
+## 📋 Referencia de Variables para Consultas SQL
+
+| Variable | Referencia en SQL | Descripción |
+| :--- | :--- | :--- |
+| **`select`** | `SELECT ...` | Lista de columnas (separadas por coma) que quieres obtener de la base de datos. |
+| **`table`** | `FROM ...` | El nombre de la tabla principal para la consulta. |
+| **`rel`** | `JOIN ...` | Lista de tablas relacionadas (separadas por coma) para hacer `INNER JOIN`s. |
+| **`type`** | `ON ...` | Se usa junto con `rel` para definir la lógica de los nombres de los campos de relación (ej. foreign keys) en los `JOIN`. |
+| **`linkTo`** | `WHERE ...` | El nombre de la columna que funcionará como filtro (`WHERE campo = ...`). |
+| **`equalTo`** | `= ...` | El valor exacto que debe tener la columna definida en `linkTo`. |
+| **`search`** | `LIKE ...` | El valor/palabra clave que se utilizará para buscar dentro de una columna (búsquedas parciales). |
+| **`between1`** | `BETWEEN ... AND` | El valor inferior (límite inicial) para una búsqueda de rango. |
+| **`between2`** | `... AND ...` | El valor superior (límite final) para una búsqueda de rango. |
+| **`filterTo`** | `SELECT / WHERE` | Una columna adicional que se incluye para aplicar filtros complejos o rangos sin perder la estructura principal. |
+| **`inTo`** | `IN (...)` | Indica que se debe realizar un filtrado utilizando una lista de valores permitidos (`WHERE columna IN (val1, val2)`). |
+| **`orderBy`** | `ORDER BY ...` | La columna por la cual se ordenarán los resultados. |
+| **`orderMode`** | `ASC/DESC` | El sentido del orden (`ASC` para ascendente, `DESC` para descendente). |
+| **`startAt`** | `LIMIT ...` | El índice inicial para paginación. |
+| **`endAt`** | `OFFSET ...` | La cantidad de registros a obtener en la paginación. |
+
+
+
+
 ---
 
 ## 🔄 Ciclo de Vida de una Petición con Filtros y Ordenamiento (Request-Response)
