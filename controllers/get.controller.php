@@ -150,7 +150,8 @@ class GetController
         } else {
             $json = array(
                 'status' => 404,
-                'result' => 'no encontrado'
+                'result' => 'no encontrado',
+                'method' => 'get'
             );
         }
 

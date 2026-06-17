@@ -12,7 +12,6 @@
 require_once "controllers/get.controller.php";
 //require_once "models/get.model.php";
 
-$table = explode("?", $routesArray[1])[0];
  // con explode se genera un array separado por ? y se captura el primer indice que es la tabla a consultar
 
 // preguntamos si viene un variable select de la url con el operaddro ternario 

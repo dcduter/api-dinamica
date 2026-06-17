@@ -28,8 +28,13 @@ return; /* para que no se ejecute el codigo que sigue */
 /* CUANDO SI SE HACEN PETICIONES SE EJECUTA EL CODIGO QUE SIGUE */
 if(count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])){
 
+    // se coloca aca para que pueda ser usado en post.php
+    // se elimina el ? y se captura el primer indice que es la tabla a consultar
+    $table = explode("?", $routesArray[1])[0];
+
     //  peticiones GET 
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
+
         
       include "routes/services/get.php";
         
@@ -38,10 +43,8 @@ if(count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])){
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         // peticiones POST 
-        $json = array (
-            'status' => 200,
-            'result' => 'Regio POST'
-        );
+        include "routes/services/post.php";
+        
     }
 
     if($_SERVER['REQUEST_METHOD'] == 'PUT'){
