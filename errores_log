@@ -887,3 +887,6 @@ Stack trace:
 #511 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
 #512 {main}
   thrown in C:\wamp64\www\apirest-dinamica\models\post.model.php on line 12
+[18-Jun-2026 02:57:28 UTC] PHP Parse error:  syntax error, unexpected token "}" in C:\wamp64\www\apirest-dinamica\models\put.model.php on line 61
+[18-Jun-2026 02:58:28 UTC] PHP Parse error:  syntax error, unexpected token "}" in C:\wamp64\www\apirest-dinamica\models\put.model.php on line 61
+[18-Jun-2026 02:58:32 UTC] PHP Parse error:  syntax error, unexpected token "}" in C:\wamp64\www\apirest-dinamica\models\put.model.php on line 61

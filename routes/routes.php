@@ -50,18 +50,13 @@ if(count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])){
     if($_SERVER['REQUEST_METHOD'] == 'PUT'){
 
         // peticiones PUT 
-        $json = array (
-            'status' => 200,
-            'result' => 'Regio PUT'
-        );
+        include "routes/services/put.php";
+        
+        
     }
 
     if($_SERVER['REQUEST_METHOD'] == 'DELETE'){
         
-        // peticiones DELETE 
-        $json = array (
-            'status' => 200,
-            'result' => 'Regio DELETE'
-        );
+      include 'routes/services/delete.php';
     }
 }
