@@ -890,3 +890,63 @@ Stack trace:
 [18-Jun-2026 02:57:28 UTC] PHP Parse error:  syntax error, unexpected token "}" in C:\wamp64\www\apirest-dinamica\models\put.model.php on line 61
 [18-Jun-2026 02:58:28 UTC] PHP Parse error:  syntax error, unexpected token "}" in C:\wamp64\www\apirest-dinamica\models\put.model.php on line 61
 [18-Jun-2026 02:58:32 UTC] PHP Parse error:  syntax error, unexpected token "}" in C:\wamp64\www\apirest-dinamica\models\put.model.php on line 61
+[21-Jun-2026 04:09:16 UTC] PHP Warning:  Undefined variable $tabla in C:\wamp64\www\apirest-dinamica\routes\services\post.php on line 49
+[21-Jun-2026 04:09:16 UTC] PHP Stack trace:
+[21-Jun-2026 04:09:16 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[21-Jun-2026 04:09:16 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[21-Jun-2026 04:09:16 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[21-Jun-2026 04:09:16 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:46
+[21-Jun-2026 04:09:16 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PostModel::postRegister() in C:\wamp64\www\apirest-dinamica\controllers\post.controller.php:58
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\routes\services\post.php(49): PostController::postRegister(NULL, Array, 'instructor')
+#1 C:\wamp64\www\apirest-dinamica\routes\routes.php(46): include('C:\\wamp64\\www\\a...')
+#2 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#3 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#4 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\controllers\post.controller.php on line 58
+[21-Jun-2026 04:10:30 UTC] PHP Warning:  Undefined variable $tabla in C:\wamp64\www\apirest-dinamica\routes\services\post.php on line 49
+[21-Jun-2026 04:10:30 UTC] PHP Stack trace:
+[21-Jun-2026 04:10:30 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[21-Jun-2026 04:10:30 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[21-Jun-2026 04:10:30 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[21-Jun-2026 04:10:30 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:46
+[21-Jun-2026 04:10:30 UTC] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(email_instructor,password_instructor) VALUES ('instructor@correo.com','$2a$07$u' at line 1 in C:\wamp64\www\apirest-dinamica\models\post.model.php:49
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\models\post.model.php(49): PDOStatement->execute()
+#1 C:\wamp64\www\apirest-dinamica\controllers\post.controller.php(48): PostModel::postData(NULL, Array)
+#2 C:\wamp64\www\apirest-dinamica\routes\services\post.php(49): PostController::postRegister(NULL, Array, 'instructor')
+#3 C:\wamp64\www\apirest-dinamica\routes\routes.php(46): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#6 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\post.model.php on line 49
+[21-Jun-2026 04:14:14 UTC] PHP Fatal error:  Uncaught Error: Call to undefined method PostModel::postRegister() in C:\wamp64\www\apirest-dinamica\controllers\post.controller.php:58
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\routes\services\post.php(49): PostController::postRegister('instructors', Array, 'instructor')
+#1 C:\wamp64\www\apirest-dinamica\routes\routes.php(46): include('C:\\wamp64\\www\\a...')
+#2 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#3 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#4 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\controllers\post.controller.php on line 58
+[21-Jun-2026 04:27:49 UTC] Error SQL en getData: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id_instructors' in 'order clause'
+[21-Jun-2026 04:58:24 UTC] PHP Fatal error:  Uncaught ArgumentCountError: Too few arguments to function GetModel::getRelDataFilter(), 8 passed in C:\wamp64\www\apirest-dinamica\controllers\post.controller.php on line 78 and exactly 9 expected in C:\wamp64\www\apirest-dinamica\models\get.model.php:224
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\controllers\post.controller.php(78): GetModel::getRelDataFilter('instructors', '*', 'email_instructo...', 'instructor@corr...', NULL, NULL, NULL, NULL)
+#1 C:\wamp64\www\apirest-dinamica\routes\services\post.php(65): PostController::postLogin('instructors', Array, 'instructor')
+#2 C:\wamp64\www\apirest-dinamica\routes\routes.php(46): include('C:\\wamp64\\www\\a...')
+#3 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#4 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#5 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\models\get.model.php on line 224
+[24-Jun-2026 03:09:12 UTC] PHP Parse error:  syntax error, unexpected variable "$update" in C:\wamp64\www\apirest-dinamica\controllers\post.controller.php on line 116
+[24-Jun-2026 03:10:43 UTC] PHP Fatal error:  Uncaught DomainException: Provided key is too short in C:\wamp64\www\apirest-dinamica\vendor\firebase\php-jwt\src\JWT.php:701
+Stack trace:
+#0 C:\wamp64\www\apirest-dinamica\vendor\firebase\php-jwt\src\JWT.php(274): Firebase\JWT\JWT::validateHmacKeyLength('lksdjflkj3klj4l...', 'SHA256')
+#1 C:\wamp64\www\apirest-dinamica\vendor\firebase\php-jwt\src\JWT.php(242): Firebase\JWT\JWT::sign('eyJ0eXAiOiJKV1Q...', Object(SensitiveParameterValue), 'HS256')
+#2 C:\wamp64\www\apirest-dinamica\controllers\post.controller.php(101): Firebase\JWT\JWT::encode(Array, Object(SensitiveParameterValue), 'HS256')
+#3 C:\wamp64\www\apirest-dinamica\routes\services\post.php(65): PostController::postLogin('instructors', Array, 'instructor')
+#4 C:\wamp64\www\apirest-dinamica\routes\routes.php(46): include('C:\\wamp64\\www\\a...')
+#5 C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php(25): include('C:\\wamp64\\www\\a...')
+#6 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
+#7 {main}
+  thrown in C:\wamp64\www\apirest-dinamica\vendor\firebase\php-jwt\src\JWT.php on line 701

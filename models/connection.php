@@ -1,5 +1,9 @@
 <?php
 
+require_once "vendor/autoload.php";
+// se use el componente jwt
+use Firebase\JWT\JWT;
+
 /**
  * Clase Connection
  * 
@@ -142,5 +146,28 @@ class Connection
             return $sum == count($columns) ? $validate : null;
         }
     }
+
+    /*================================== 
+    generar token de autenticaion
+    =================================== */
+
+    // con el id y el email 
+    static public function jwt($id, $email){
+
+        $time = time(); // devuelve el tiempo actual en segundos 
+
+        $token = array(
+            'iat' => $time,
+            'exp' => $time + (60 * 60 * 24), // tiempo final del token es de 1 dia
+            'data' => [
+
+                "id" => $id,
+                "email" => $email
+            ]
+        );
+
+       
+        return $token; // se entrega el token generado para que el controller lo envie al cliente 
+    }   
 }
 

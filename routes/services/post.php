@@ -23,7 +23,7 @@ if(isset($_POST)){
         // si algo esta mal se ejecutucuta
         $json = array (
             'status' => 404,
-            'result' => 'Escriba de nuevo el nombre de la tala'
+            'result' => 'Escriba de nuevo el nombre de la tabla (POST)'
         );
         
         // json_encode permite devolve el status obtenido en el array en forma de json
@@ -32,13 +32,49 @@ if(isset($_POST)){
         return;
     }
     
-    
-    /* ====================================================================
-      Solicitamos respuesta del controlador para crear datos en cualquier tabla
-       ====================================================================*/
-       // instancia la clase post controller
+
         $response = new PostController();
+
+       /* ====================================================================
+      Peticion POST para el registro de usuarios
+       ====================================================================*/
+
+       if(isset($_GET["register"]) && $_GET["register"] === "true"){
+
+        // se pregunta si viene la variable suffix con ?? para indicar un valor predeterminado
+        $suffix = $_GET["suffix"] ?? "user";
+
+        // se pide una respuesta la controlador
+        // en le controlador se crea en metodo para registro de usuario 
+        $response -> postRegister($table, $_POST, $suffix);
+
+
+
+
+        /* ====================================================================
+         Peticion POST para el login de usuarios
+         ====================================================================*/
+
+       }else if(isset($_GET["login"]) && $_GET["login"] == "true"){
+
+        // se pregunta si viene la variable suffix con ?? para indicar un valor predeterminado
+        $suffix = $_GET["suffix"] ?? "user";
+
+        // se pide una respuesta la controlador
+        // en le controlador se crea en metodo para registro de usuario 
+        $response -> postLogin($table, $_POST, $suffix);
+            
+       }else{
+
+        /* ====================================================================
+            Solicitamos respuesta del controlador para crear datos en cualquier tabla
+        ====================================================================*/
 
         // se llama la metodo postData
         $response -> postData($_POST, $table);
+
+
+       }
+    
+
 }
