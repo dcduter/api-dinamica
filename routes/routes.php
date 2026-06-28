@@ -9,7 +9,7 @@
  * la URL solicitada, comprobar el método HTTP y canalizarla al servicio correspondiente
  * (como routes/services/get.php para peticiones de tipo GET).
  */
-
+ require_once "models/connection.php";
 $routesArray = explode("/", $_SERVER['REQUEST_URI']); // captuar la url
 $routesArray = array_filter($routesArray); // esto hace que se quite la primera posicion del array que es null
 /* CUANDO NO SE HACEN PETICIONES A LA API SE MUESTRA UN REGISTRO NO ENCONTRADO */
@@ -28,11 +28,27 @@ return; /* para que no se ejecute el codigo que sigue */
 /* CUANDO SI SE HACEN PETICIONES SE EJECUTA EL CODIGO QUE SIGUE */
 if(count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])){
 
+
+    /* ================================
+       Validar clave secreta
+    ================================= */
+   if(!isset(getallheaders()["Authorization"]) || getallheaders()["Authorization"] != Connection::apiKey()){
+
+   $json = array (
+       'status' => 400,
+       'results' => "No esta autorizado para esa peticion loka"
+   );
+
+   
+   echo json_encode($json, http_response_code($json["status"]));
+   return;
+   }
+
     // se coloca aca para que pueda ser usado en post.php
     // se elimina el ? y se captura el primer indice que es la tabla a consultar
     $table = explode("?", $routesArray[1])[0];
 
-    //  peticiones GET 
+    //================= peticiones GET =================
     if($_SERVER['REQUEST_METHOD'] == 'GET'){
 
         
@@ -40,6 +56,7 @@ if(count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])){
         
     }
 
+    //================= peticiones POST =================
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         
         // peticiones POST 
@@ -47,6 +64,7 @@ if(count($routesArray) == 1 && isset($_SERVER['REQUEST_METHOD'])){
         
     }
 
+    //================= peticiones PUT =================
     if($_SERVER['REQUEST_METHOD'] == 'PUT'){
 
         // peticiones PUT 

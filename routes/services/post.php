@@ -60,47 +60,85 @@ if (isset($_POST)) {
        ====================================================================*/
 
         if (isset($_GET['token'])) {
-            
-            // si no viene table y suffix su valor sera user
-            $tableToken = $_GET['table'] ?? 'user';
-            $suffix = $_GET['suffix'] ?? 'user';
 
 
-            $validate = Connection::tokenValidate($_GET['token'],$tableToken,$suffix);
+          /* =============================================
+              Peticion PUT para usuarios no autorizados 
+              ===========================================*/
+          if($_GET["token"] == "no" && isset($_GET["except"])){
 
-            /* ====================================================================
-             Solicitamos respuesta del controlador para crear datos en cualquier tabla
-            ====================================================================*/
 
-            if($validate === "ok"){
+
+            $columns = array($_GET["except"]);
+
+             /* ====================================================
+                VALIDAR QUE LA TABLA Y SUS COLUMNAS EXISTAN
+             ===============================================*/
+                    // ! se usa para invertir el resultado si false == true y si es true == false, si es false seria verdadero y se ejecuta el if
+            if (!Connection::getColumnsData($table, $columns)) {
+                    // si algo esta mal se ejecutucuta
+                 $json = array(
+                   'status' => 404,
+                   'result' => 'Escriba de nuevo el nombre de la tabla (POST)'
+                    );
+
+                    // json_encode permite devolve el status obtenido en el array en forma de json
+                    echo json_encode($json, http_response_code($json['status']));
+                    // return para detener la ejecucion del codigo
+                    return;
+                }
+
+                // se pide respuesta del controlador para crear datos en cualquier tabla
+                $response -> postData($table, $_POST);
+
+          }else{
+                    
+                    /* =============================================
+                      Peticion POST para usuarios autorizados 
+                      ===========================================*/
+                      
+                    // si no viene table y suffix su valor sera user
+                    $tableToken = $_GET['table'] ?? 'user';
+                    $suffix = $_GET['suffix'] ?? 'user';
+
+
+                    $validate = Connection::tokenValidate($_GET['token'],$tableToken,$suffix);
+
+                    /* ====================================================================
+                    Solicitamos respuesta del controlador para crear datos en cualquier tabla
+                    ====================================================================*/
+
+                    if($validate === "ok"){
+                    
+                    // se llama la metodo postData
+                    $response->postData($_POST, $table);
+                    } 
+                    
+                    /* =========================
+                    Token expirado
+                    ========================= */
+                    else if($validate === "expired"){
+                        $json = array(
+                            'status' => 303,
+                            'results' => "Error: Token expirado"
+                        );
+                        echo json_encode($json, http_response_code($json['status']));
+                        return;
+                    }
+                    
+                    /* =========================
+                    el token no coincide en la BD
+                    ========================= */
+                    else {
+                        $json = array(
+                            'status' => 400,
+                            'results' => "Error: Usuario no autorizado"
+                        );
+                        echo json_encode($json, http_response_code($json['status']));
+                        return;
+                    }
+                }
             
-            // se llama la metodo postData
-            $response->postData($_POST, $table);
-            } 
-            
-            /* =========================
-             Token expirado
-             ========================= */
-            else if($validate === "expired"){
-                $json = array(
-                    'status' => 303,
-                    'results' => "Error: Token expirado"
-                );
-                echo json_encode($json, http_response_code($json['status']));
-                return;
-            }
-            
-            /* =========================
-             el token no coincide en la BD
-             ========================= */
-            else {
-                $json = array(
-                    'status' => 400,
-                    'results' => "Error: Usuario no autorizado"
-                );
-                echo json_encode($json, http_response_code($json['status']));
-                return;
-            }
             /*======================================
               se solicita token para realizar la accion
               =========================================*/

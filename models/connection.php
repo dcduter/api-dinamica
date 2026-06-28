@@ -185,4 +185,14 @@ class Connection
         }
 
     }
+
+    /* ======================================
+    APIKEY
+    ======================================== */
+
+    static public function apiKey(){
+
+       return "api_XhoKafOhvrBeoiqkc2rxilhAOxd1tTJB";
+
+    }
 }
