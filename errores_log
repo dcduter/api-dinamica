@@ -950,3 +950,36 @@ Stack trace:
 #6 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
 #7 {main}
   thrown in C:\wamp64\www\apirest-dinamica\vendor\firebase\php-jwt\src\JWT.php on line 701
+[27-Jun-2026 23:01:36 UTC] DEBUG: Iniciando registro sin contraseña
+[27-Jun-2026 23:01:36 UTC] DEBUG: Respuesta PostModel::postData: {"lastId":"34","comment":"todo bien"}
+[27-Jun-2026 23:01:36 UTC] DEBUG: Usuario registrado correctamente, buscando usuario
+[27-Jun-2026 23:01:36 UTC] DEBUG: Respuesta GetModel::getDataFilter: [{"id_instructor":25,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":"$2a$07$usesomesillystringforeh13SwIG2YuGjH7WNZPTqAnpzOR7aksC","token_instructor":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3ODI2MDEwNjQsImV4cCI6MTc4MjY4NzQ2NCwiZGF0YSI6eyJpZCI6MjUsImVtYWlsIjoiaW5zdHJ1Y3RvckBjb3JyZW8uY29tIn19.wAKhST-XgljMxFAp6tGPIl80kNcibeh5JxH8GQ96CCM","token_exp_instructor":"1782687464","date_created_instructor":null,"date_updated_instructor":"2026-06-27 17:57:44"},{"id_instructor":31,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 17:42:49"},{"id_instructor":32,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 17:52:53"},{"id_instructor":33,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 17:57:44"},{"id_instructor":34,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 18:01:36"}]
+[27-Jun-2026 23:01:36 UTC] DEBUG: Usuario encontrado, generando token
+[27-Jun-2026 23:01:36 UTC] DEBUG: Token generado: {"iat":1782601296,"exp":1782687696,"data":{"id":25,"email":"instructor@correo.com"}}
+[27-Jun-2026 23:01:36 UTC] DEBUG: JWT codificado: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3O...
+[27-Jun-2026 23:01:36 UTC] DEBUG: Respuesta PutModel::putData: {"comment":"editado correctamente"}
+[27-Jun-2026 23:01:36 UTC] DEBUG: Token actualizado correctamente
+[27-Jun-2026 23:01:47 UTC] DEBUG: Iniciando registro sin contraseña
+[27-Jun-2026 23:01:47 UTC] DEBUG: Respuesta PostModel::postData: {"lastId":"35","comment":"todo bien"}
+[27-Jun-2026 23:01:47 UTC] DEBUG: Usuario registrado correctamente, buscando usuario
+[27-Jun-2026 23:01:47 UTC] DEBUG: Respuesta GetModel::getDataFilter: [{"id_instructor":25,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":"$2a$07$usesomesillystringforeh13SwIG2YuGjH7WNZPTqAnpzOR7aksC","token_instructor":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3ODI2MDEyOTYsImV4cCI6MTc4MjY4NzY5NiwiZGF0YSI6eyJpZCI6MjUsImVtYWlsIjoiaW5zdHJ1Y3RvckBjb3JyZW8uY29tIn19.QjjNumHzSYjTy3O81Ps_8vn-uQ3AIZE3C3RyUciWoSE","token_exp_instructor":"1782687696","date_created_instructor":null,"date_updated_instructor":"2026-06-27 18:01:36"},{"id_instructor":31,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 17:42:49"},{"id_instructor":32,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 17:52:53"},{"id_instructor":33,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 17:57:44"},{"id_instructor":34,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 18:01:36"},{"id_instructor":35,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@correo.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 18:01:47"}]
+[27-Jun-2026 23:01:47 UTC] DEBUG: Usuario encontrado, generando token
+[27-Jun-2026 23:01:47 UTC] DEBUG: Token generado: {"iat":1782601307,"exp":1782687707,"data":{"id":25,"email":"instructor@correo.com"}}
+[27-Jun-2026 23:01:47 UTC] DEBUG: JWT codificado: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3O...
+[27-Jun-2026 23:01:47 UTC] DEBUG: Respuesta PutModel::putData: {"comment":"editado correctamente"}
+[27-Jun-2026 23:01:47 UTC] DEBUG: Token actualizado correctamente
+[27-Jun-2026 23:03:15 UTC] DEBUG: Iniciando registro sin contraseña
+[27-Jun-2026 23:03:15 UTC] DEBUG: Respuesta PostModel::postData: {"lastId":"36","comment":"todo bien"}
+[27-Jun-2026 23:03:15 UTC] DEBUG: Usuario registrado correctamente, buscando usuario
+[27-Jun-2026 23:03:15 UTC] DEBUG: Respuesta GetModel::getDataFilter: [{"id_instructor":36,"name_instructor":null,"username_instructor":null,"email_instructor":"instructor@gmail.com","password_instructor":null,"token_instructor":null,"token_exp_instructor":null,"date_created_instructor":null,"date_updated_instructor":"2026-06-27 18:03:15"}]
+[27-Jun-2026 23:03:15 UTC] DEBUG: Usuario encontrado, generando token
+[27-Jun-2026 23:03:15 UTC] DEBUG: Token generado: {"iat":1782601395,"exp":1782687795,"data":{"id":36,"email":"instructor@gmail.com"}}
+[27-Jun-2026 23:03:15 UTC] DEBUG: JWT codificado: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3O...
+[27-Jun-2026 23:03:15 UTC] DEBUG: Respuesta PutModel::putData: {"comment":"editado correctamente"}
+[27-Jun-2026 23:03:15 UTC] DEBUG: Token actualizado correctamente
+[28-Jun-2026 03:22:45 UTC] PHP Warning:  Undefined array key "token" in C:\wamp64\www\apirest-dinamica\routes\services\post.php on line 62
+[28-Jun-2026 03:22:45 UTC] PHP Stack trace:
+[28-Jun-2026 03:22:45 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[28-Jun-2026 03:22:45 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:25
+[28-Jun-2026 03:22:45 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[28-Jun-2026 03:22:45 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:46

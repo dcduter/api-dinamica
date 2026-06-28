@@ -54,10 +54,70 @@
 
           }
           
-          /* ======================================
-            Solicitamos respuesta del controlador 
+          /* =====================================================
+            Peticion PUT para usuario autorizados
+            ====================================================== */
+            if(isset($_GET["token"])){
+              
+
+            // si no viene table y suffix su valor sera user
+            $tableToken = $_GET['table'] ?? 'user';
+            $suffix = $_GET['suffix'] ?? 'user';
+
+
+            $validate = Connection::tokenValidate($_GET['token'],$tableToken,$suffix);
+
+            /* ====================================================================
+             Solicitamos respuesta del controlador para crear datos en cualquier tabla
+            ====================================================================*/
+
+            if($validate === "ok"){
+
+
+              /* ======================================
+            Solicitamos respuesta del controlador para editar datos en cualquier tabla
             ====================================== */
 
             $response = new PutController();
             $response->putData($data, $table, $_GET['id'], $_GET['nameId']);
+
+            } 
+            
+            /* =========================
+             Token expirado
+             ========================= */
+            else if($validate === "expired"){
+                $json = array(
+                    'status' => 303,
+                    'results' => "Error: Token expirado"
+                );
+                echo json_encode($json, http_response_code($json['status']));
+                return;
+            }
+            
+            /* =========================
+             el token no coincide en la BD
+             ========================= */
+            else {
+                $json = array(
+                    'status' => 400,
+                    'results' => "Error: Usuario no autorizado"
+                );
+                echo json_encode($json, http_response_code($json['status']));
+                return;
+            }
+
+            /* ===============================
+              Error cuando no envia  token para realizar la accion
+              ==================================== */
+            }else{
+              $json = array(
+                'status' => 400,
+                'results' => "Error: Autorizacion requerida"
+              );
+
+              echo json_encode($json, http_response_code($json["status"]));
+              return;
+
+            }
     }

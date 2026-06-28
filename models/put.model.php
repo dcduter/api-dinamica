@@ -1,31 +1,25 @@
 <?php
 // RECIVO LOS DEL CONTROLLADOR
 
-require_once "connection.php";
+require_once 'connection.php';
 
-require_once "get.model.php";
+require_once 'get.model.php';
 
 class PutModel
 {
-
-
-
     /* ===================================================
     Metodo para editar datos de forma dinamica
    ===============================================*/
 
     static public function putData($table, $data, $id, $nameId)
     {
-
         /* =================
-          Validar el id      
+          Validar el id
         ================== */
         $response = GetModel::getDataFilter($table, $nameId, $nameId, $id, null, null, null, null);
 
         if (empty($response)) {
-
             return null;
-
         }
 
         /* ===========================================
@@ -33,12 +27,11 @@ class PutModel
           =========================================== */
         // se crea dos variable vacias para columnas y parametros
 
-        $set = "";
+        $set = '';
 
         foreach ($data as $key => $value) {
-
             // se arma el query con los campos a actualizar
-            $set .= $key . " = :" . $key . ",";
+            $set .= $key . ' = :' . $key . ',';
         }
 
         // se le quita la ultima coma a $set
@@ -52,33 +45,22 @@ class PutModel
         // enlace de parametros
 
         foreach ($data as $key => $value) {
-
             // se enlazan los parametros
-            $stmt->bindParam(":" . $key, $data[$key], PDO::PARAM_STR);
+            $stmt->bindParam(':' . $key, $data[$key], PDO::PARAM_STR);
         }
 
         // enlazamos el parametro $nameId para la condicion WHERE
-        $stmt->bindParam(":" . $nameId, $id, PDO::PARAM_STR);
-
-
+        $stmt->bindParam(':' . $nameId, $id, PDO::PARAM_STR);
 
         // se ejecuta
         if ($stmt->execute()) {
-
             $response = array(
-
                 //     "lastId" => $link -> lastInsertId(), // para ver el ultimo id insertado, por eso la conexion se coloco en $link
-                "comment" => "editado correctamente"
-
+                'comment' => 'editado correctamente'
             );
             return $response;
-
         } else {
-
             return $link->errorInfo();
-
         }
-
     }
 }
-
