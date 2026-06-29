@@ -5,7 +5,9 @@
 Esta arquitectura sigue una variante del patrón **MVC (Modelo-Vista-Controlador)** adaptada para una API REST, donde:
 *   **Rutas (`routes/`):** Actúan como el "Tráfico", recibiendo la petición HTTP y decidiendo a qué servicio dirigirla.
 *   **Controladores (`controllers/`):** Actúan como el "Cerebro", recibiendo parámetros, controlando la lógica de negocio y comunicando las rutas con los modelos.
-*   **Modelos (`models/`):** Actúan como las "Manos", comunicándose directamente con la base de datos (BD) mediante consultas preparadas en PDO de forma segura.
+*   **Modelos (`models/`):** Actúan como las "Manos", comunicándose directamente con la base de datos (BD) mediante consultas en PDO.
+
+---
 
 ## 📋 Referencia de Variables para Consultas SQL
 
@@ -27,12 +29,11 @@ Esta arquitectura sigue una variante del patrón **MVC (Modelo-Vista-Controlador
 | **`startAt`** | `LIMIT ...` | El índice inicial para paginación. |
 | **`endAt`** | `OFFSET ...` | La cantidad de registros a obtener en la paginación. |
 
-
-
-
 ---
 
-## 🔄 Ciclo de Vida de una Petición con Filtros y Ordenamiento (Request-Response)
+## 🔄 Ciclo de Vida de una Petición (Request-Response)
+
+### 1. Flujo para Petición de Lectura (GET)
 
 El siguiente diagrama muestra exactamente el orden cronológico en que se conectan y ejecutan tus archivos desde que realizas una petición GET (incluyendo parámetros de columnas, filtrado y ordenamiento) hasta que obtienes los datos en formato JSON:
 
@@ -76,18 +77,12 @@ sequenceDiagram
     GetCtrl-->>Cliente: 13. Retorna la respuesta JSON con código HTTP (200 o 404)
 ```
 
-### 🗺️ Mapa Mental Gráfico y Visual de la Arquitectura
-
-Además del diagrama de secuencia, aquí tienes una representación visual del mapa mental del flujo de tu API REST:
-
-![Mapa Mental de Arquitectura](file:///C:/Users/diego/.gemini/antigravity-ide/brain/98aee8dc-aac2-4169-9eb7-deaf1474b43c/api_architecture_mindmap_1781070929275.png)
-
 ---
 
 ## 📂 Descripción Detallada de cada Archivo y sus Conexiones
 
 ### 1. [index.php](file:///c:/wamp64/www/apirest-dinamica/index.php) (Punto de entrada principal)
-*   **Propósito:** Recibe todas las solicitudes del servidor web (redireccionadas por el `.htaccess`). Inicializa la configuración de errores del sistema y arranca la API instanciando el despachador de rutas.
+*   **Propósito:** Recibe todas las solicitudes del servidor web (redireccionadas por el `.htaccess`). Inicializa la configuración de errores del sistema, define las cabeceras CORS de forma global y arranca la API instanciando el despachador de rutas.
 *   **Conexión de entrada:** Petición HTTP directa del cliente.
 *   **Conexión de salida:** Llama a `controllers/routes.contoller.php`.
 
@@ -97,70 +92,85 @@ Además del diagrama de secuencia, aquí tienes una representación visual del m
 *   **Conexión de salida:** Incluye el archivo de rutas `routes/routes.php`.
 
 ### 3. [routes.php](file:///c:/wamp64/www/apirest-dinamica/routes/routes.php) (El semáforo de la API)
-*   **Propósito:** Analiza la URI de la petición, determina a qué tabla se quiere acceder, y evalúa el método HTTP correspondiente (`GET`, `POST`, `PUT`, `DELETE`).
+*   **Propósito:** Analiza la URI de la petición, determina a qué tabla se quiere acceder, y evalúa el método HTTP correspondiente (`GET`, `POST`, `PUT`, `DELETE`). Adicionalmente valida la presencia de la clave de API (`ApiKey`) en las cabeceras de autorización de la solicitud antes de otorgar acceso (a menos que la tabla esté en la lista de acceso público).
 *   **Conexión de entrada:** Incluido por `routesController`.
-*   **Conexión de salida:** Si es una petición `GET`, incluye el servicio específico en `routes/services/get.php`.
+*   **Conexión de salida:** Incluye los servicios correspondientes (`routes/services/get.php`, `post.php`, `put.php` o `delete.php`).
 
-### 4. [get.php](file:///c:/wamp64/www/apirest-dinamica/routes/services/get.php) (El integrador del servicio GET)
-*   **Propósito:** *[Cambio por IA]* Procesa específicamente las peticiones de lectura (`GET`). Realiza la extracción de parámetros desde la URL de forma segura utilizando comprobaciones `isset()` para evitar advertencias del tipo "Undefined array key" cuando no se envían datos opcionales:
-    *   **Tabla:** Extraída eliminando la query string (`explode('?', $routesArray[1])[0]`).
-    *   `$select`: Columnas a consultar (obtenida de `$_GET['select']` si existe; por defecto `*`).
-    *   `$orderBy`: Columna por la cual ordenar (obtenida de `$_GET['orderBy']` si existe; por defecto `null`).
-    *   `$orderMode`: Dirección de ordenamiento (obtenida de `$_GET['orderMode']` si existe; por defecto `null`).
-    *   `$startAt`: Índice de inicio de paginación (obtenida de `$_GET['startAt']` si existe; por defecto `null`).
-    *   `$endAt`: Cantidad de registros a limitar (obtenida de `$_GET['endAt']` si existe; por defecto `null`).
-*   **Flujo de Control:**
-    *   Evalúa si el cliente envió parámetros de filtro en la URL (`linkTo` y `equalTo`).
-    *   **Con Filtro:** Llama a `$response->getDataFilter($table, $select, $_GET["linkTo"], $_GET["equalTo"], $orderBy, $orderMode, $startAt, $endAt)`.
-    *   **Sin Filtro:** Llama a `$response->getData($table, $select, $orderBy, $orderMode, $startAt, $endAt)`.
-*   **Conexión de entrada:** Incluido por `routes/routes.php`.
-*   **Conexión de salida:** Instancia `GetController` e invoca sus métodos.
+### 4. Servicios (`routes/services/`)
+*   **[get.php](file:///c:/wamp64/www/apirest-dinamica/routes/services/get.php):** Extrae y valida los parámetros de la URL para consultas de tipo GET (filtros, rangos, búsquedas, relaciones o consultas simples).
+*   **[post.php](file:///c:/wamp64/www/apirest-dinamica/routes/services/post.php):** Procesa datos enviados en el cuerpo de la petición. Maneja el registro de usuarios (`register=true`), inicio de sesión (`login=true`) o inserción genérica de registros previa verificación del token JWT.
+*   **[put.php](file:///c:/wamp64/www/apirest-dinamica/routes/services/put.php):** Captura los datos a editar a través de `php://input`, valida que la tabla y columnas existan, verifica el token de seguridad del usuario y ejecuta la actualización.
+*   **[delete.php](file:///c:/wamp64/www/apirest-dinamica/routes/services/delete.php):** Valida la existencia de la tabla/columna clave, comprueba el token de seguridad y llama al controlador para eliminar el registro seleccionado por ID.
 
-### 5. [get.controller.php](file:///c:/wamp64/www/apirest-dinamica/controllers/get.controller.php) (El cerebro de las peticiones GET)
-*   **Propósito:** *[Cambio por IA]* Valida la estructura de la consulta entrante y decide a qué método del modelo invocar. Cuenta con:
-    *   `getData()`: Intermediario para consultas sin condiciones de filtrado.
-    *   `getDataFilter()`: Intermediario para consultas con filtros (WHERE).
-    *   `fncResponse()`: Formatea los datos de salida a JSON, calcula el número de resultados (`total`) y responde con los códigos de estado HTTP correctos (200 en éxito, 404 si la búsqueda no arroja registros).
-*   **Conexión de entrada:** Instanciado y ejecutado desde `routes/services/get.php`.
-*   **Conexión de salida:** Llama a `GetModel::getData()` o `GetModel::getDataFilter()`.
+### 5. Controladores (`controllers/`)
+*   **[get.controller.php](file:///c:/wamp64/www/apirest-dinamica/controllers/get.controller.php):** Valida las peticiones GET, llama al modelo correspondiente y formatea las respuestas a JSON estructurado.
+*   **[post.controller.php](file:///c:/wamp64/www/apirest-dinamica/controllers/post.controller.php):** Contiene la lógica de negocio para el registro, inicio de sesión (encriptación y generación de tokens JWT) e inserción.
+*   **[put.controller.php](file:///c:/wamp64/www/apirest-dinamica/controllers/put.controller.php):** Canaliza las solicitudes de edición hacia el modelo y devuelve la respuesta.
+*   **[delete.controller.php](file:///c:/wamp64/www/apirest-dinamica/controllers/delete.controller.php):** Llama al modelo de borrado y formatea la respuesta JSON.
 
-### 6. [get.model.php](file:///c:/wamp64/www/apirest-dinamica/models/get.model.php) (El constructor dinámico de consultas SQL)
-*   **Propósito:** *[Cambio por IA]* Ejecuta el acceso directo a la base de datos armando las consultas SQL en tiempo de ejecución.
-*   **Flujo Interno:**
-    *   **Peticiones sin filtro (`getData`):** Construye la consulta uniendo columnas (`$select`), tabla (`$table`) y la ordenación si `$orderBy` y `$orderMode` están definidos.
-    *   **Peticiones con filtro (`getDataFilter`):**
-        1.  Divide las columnas del filtro (`$linkTo`) por comas y los valores de coincidencia (`$equalTo`) por guiones bajos.
-        2.  Construye dinámicamente la cláusula SQL `WHERE` encadenando `AND columna = :columna` para cada filtro adicional.
-        3.  Agrega la cláusula de ordenamiento `ORDER BY` si corresponde.
-        4.  Prepara la consulta SQL mediante PDO (`prepare($sql)`).
-        5.  Vincula dinámicamente los valores usando `$stmt->bindParam()` con el tipo `PDO::PARAM_STR`, previniendo inyecciones SQL en los valores filtrados.
-        6.  Retorna los registros en formato de clases genéricas (`PDO::FETCH_CLASS`).
-*   **Conexión de entrada:** Requerido y llamado por `GetController`.
-*   **Conexión de salida:** Ejecuta la consulta en la base de datos a través del canal abierto por `Connection::connectDataBase()`.
-
-### 7. [connection.php](file:///c:/wamp64/www/apirest-dinamica/models/connection.php) (El conector de datos)
-*   **Propósito:** Establece la configuración de conexión de red local y las credenciales (base de datos, usuario, contraseña) y retorna una instancia activa tipo **PDO**.
-*   **Conexión de entrada:** Utilizado estáticamente por `GetModel`.
-*   **Conexión de salida:** Abre el socket o canal directo a la instancia local de MySQL en WampServer.
+### 6. Modelos (`models/`)
+*   **[connection.php](file:///c:/wamp64/www/apirest-dinamica/models/connection.php):** Provee la conexión segura a la base de datos (PDO), valida la existencia de tablas/columnas consultando `information_schema.columns`, y gestiona la generación y validación de tokens JWT.
+*   **[get.model.php](file:///c:/wamp64/www/apirest-dinamica/models/get.model.php):** Construye consultas dinámicas SELECT para búsquedas, rangos, relaciones y filtros parametrizados.
+*   **[post.model.php](file:///c:/wamp64/www/apirest-dinamica/models/post.model.php):** Genera consultas SQL dinámicas de tipo `INSERT INTO` vinculando parámetros de forma segura con `bindParam`.
+*   **[put.model.php](file:///c:/wamp64/www/apirest-dinamica/models/put.model.php):** Construye consultas SQL dinámicas de tipo `UPDATE` parametrizando los valores modificados.
+*   **[delete.model.php](file:///c:/wamp64/www/apirest-dinamica/models/delete.model.php):** Construye y ejecuta consultas `DELETE FROM` dinámicas filtradas de forma segura por el identificador del registro.
 
 ---
 
-## 🛡️ Alerta de Ciberseguridad y Buenas Prácticas (Enfoque OWASP)
+## 🛡️ Reporte Detallado de Seguridad y Riesgos (Análisis OWASP)
 
-> [!WARNING]
-> ### 🚨 Riesgo de Inyección SQL de Identificadores (Tablas, Columnas y Cláusulas)
-> 
-> En los métodos `getData` y `getDataFilter` del archivo `models/get.model.php`, observamos las siguientes instrucciones:
-> ```php
-> $sql = "SELECT $select FROM $table";
-> // ...
-> $sql .= " ORDER BY $orderBy $orderMode";
-> ```
-> Aunque la cláusula `WHERE` utiliza sentencias preparadas y vinculación segura (`bindParam`) para los **valores** de búsqueda, **los identificadores de SQL (nombres de tablas, nombres de columnas en SELECT, columnas en ORDER BY y la dirección ASC/DESC) NO se pueden parametrizar en PDO** con marcadores de posición.
-> 
-> Al concatenar `$table`, `$select`, `$orderBy` y `$orderMode` directamente desde los parámetros `$_GET` de la URL, la API se expone a ataques de **Inyección SQL de Identificadores de Base de Datos**.
-> 
-> **Cómo mitigarlo (Buenas Prácticas):**
-> 1.  **Lista Blanca (Whitelist):** Antes de enviar estos parámetros al modelo, el controlador (`GetController`) debe validar que `$table` y las columnas especificadas en `$select` y `$orderBy` existan dentro de una lista de tablas/columnas autorizadas.
-> 2.  **Saneamiento de Ordenamiento:** Limitar estrictamente el parámetro `$orderMode` a un valor coincidente con `ASC` o `DESC` (insensible a mayúsculas), y rechazar cualquier otro string.
-> 3.  **Metadatos de la Base de Datos:** Consultar dinámicamente el esquema de la base de datos (`INFORMATION_SCHEMA.COLUMNS`) para verificar si la columna y tabla solicitadas existen en el servidor antes de incorporarlas en la cadena SQL.
+Como parte de tu formación en ciberseguridad, es crucial analizar críticamente el código actual de la API. A continuación, se detallan los riesgos de seguridad detectados y cómo solucionarlos:
+
+### 1. 🚨 Credenciales expuestas de la Base de Datos
+*   **Ubicación:** `Connection::infoDataBase()` en [connection.php](file:///c:/wamp64/www/apirest-dinamica/models/connection.php) (Líneas 31-35).
+*   **Riesgo:** Las credenciales de acceso a la base de datos local (`database-1`, usuario `root` sin contraseña) están escritas directamente en el código fuente. Si subes este código a un repositorio público como GitHub, tus credenciales quedarán expuestas para cualquiera.
+*   **Mitigación:** Mover estos datos a un archivo de configuración externa o variables de entorno (`.env`) usando librerías como `vlucas/phpdotenv`.
+
+### 2. 🚨 Clave de API Secreta Hardcodeada (Exposición de Llaves de API)
+*   **Ubicación:** `Connection::apiKey()` en [connection.php](file:///c:/wamp64/www/apirest-dinamica/models/connection.php) (Línea 195).
+*   **Riesgo:** La clave estática `"api_XhoKafOhvrBeoiqkc2rxilhAOxd1tTJB"` que autoriza el acceso a endpoints restringidos está escrita en duro. Cualquiera con acceso al código fuente o capaz de decompilar la app cliente conocerá la API Key global.
+*   **Mitigación:** Almacenar la API Key en variables de entorno del servidor.
+
+### 3. 🚨 Clave de Firma JWT Hardcodeada
+*   **Ubicación:** `PostController::postRegister()` y `PostController::postLogin()` en [post.controller.php](file:///c:/wamp64/www/apirest-dinamica/controllers/post.controller.php) (Líneas 77, 152, 196).
+*   **Riesgo:** La clave para firmar los tokens JWT (`'lksdjflkj3klj4lskdjfklnj23asdfgh'`) está escrita en el código. Si un atacante conoce esta clave, puede fabricar tokens válidos con cualquier identidad y saltarse toda la seguridad del backend.
+*   **Mitigación:** Almacenar la firma secreta del JWT en el archivo `.env` del servidor.
+
+### 4. 🚨 Uso Inseguro de Criptografía para Contraseñas (OWASP A02:2021)
+*   **Ubicación:** `PostController::postRegister()` y `PostController::postLogin()` en [post.controller.php](file:///c:/wamp64/www/apirest-dinamica/controllers/post.controller.php) (Líneas 45, 142).
+*   **Riesgo:** Estás utilizando la función antigua `crypt()` con un salt estático (fijo) e idéntico para todos los usuarios: `'$2a$07$usesomesillystringforsalt$'`. Esto significa que si dos usuarios eligen la contraseña `123456`, ambos tendrán exactamente el mismo hash guardado en la base de datos. Un atacante con acceso a la base de datos podría adivinar fácilmente las contraseñas usando tablas arcoíris (Rainbow Tables).
+*   **Mitigación:** Usar las funciones estándar y seguras de PHP:
+    *   Para guardar la contraseña: `password_hash($password, PASSWORD_BCRYPT)`
+    *   Para validar la contraseña en el login: `password_verify($password, $hashSaved)`
+    *   *Nota:* PHP genera automáticamente un salt aleatorio y seguro para cada contraseña bajo esta función.
+
+### 5. 🚨 Vulnerabilidad Crítica de Inyección SQL en Búsquedas y Rangos (OWASP A03:2021)
+*   **Ubicaciones:**
+    *   `GetModel::getDataSearch()` y `getRelDataSearch()` en [get.model.php](file:///c:/wamp64/www/apirest-dinamica/models/get.model.php) (Líneas 348 y 450).
+    *   `GetModel::getDataRange()` y `getRelDataRange()` en [get.model.php](file:///c:/wamp64/www/apirest-dinamica/models/get.model.php) (Líneas 530 y 603).
+*   **Riesgo:** Estás interpolando directamente parámetros recibidos del usuario a través de GET en la consulta SQL sin usar sentencias preparadas ni validación alguna:
+    *   En búsquedas: `LIKE '%$searchToArray[0]%'`
+    *   En rangos: `BETWEEN '$between1' AND '$between2'`
+    Un atacante puede enviar un valor como `?search=valor' OR '1'='1` o `?between1=1' OR 1=1 --` y manipular por completo la base de datos, logrando robar información sensible o corromper datos.
+*   **Mitigación:** Usar parámetros preparados en PDO (`:search`, `:between1`, `:between2`) y enlazarlos de forma segura mediante `$stmt->bindParam()` o pasarlos en el método execute.
+
+### 6. 🚨 Inyección SQL de Identificadores (Tablas y Columnas)
+*   **Ubicación:** `Connection::getColumnsData()` en [connection.php](file:///c:/wamp64/www/apirest-dinamica/models/connection.php) (Línea 110) y en todas las consultas concatenadas (`$table`, `$select`, `$orderBy`).
+*   **Riesgo:** El nombre de la tabla `$table` se concatena directamente en la consulta del esquema de datos: `"SELECT ... WHERE table_name = '$table'"`. Dado que la tabla proviene directamente de la URL, un usuario malintencionado puede alterar el valor para inyectar SQL a nivel de metadatos.
+*   **Mitigación:** Validar los nombres de las tablas y campos recibidos contra una **lista blanca (whitelist)** de tablas existentes autorizadas para consumo de la API antes de construir la consulta.
+
+### 7. 🚨 Evasión Completa de Autenticación mediante el Parámetro `except` (Backdoor)
+*   **Ubicación:** `routes/services/post.php` y `routes/services/put.php` (Líneas 68 y 66 respectivamente).
+*   **Riesgo:** El código contiene una condición que anula el requerimiento de token:
+    ```php
+    if($_GET["token"] == "no" && isset($_GET["except"]))
+    ```
+    Si esta condición se cumple, el servidor permite realizar inserciones (POST) o modificaciones (PUT) en las tablas sin validar el JWT. Esto expone a la base de datos a que cualquier usuario no autenticado inserte o altere datos falsos con solo agregar `?token=no&except=cualquier_columna`.
+*   **Mitigación:** Eliminar por completo esta condición. Si hay tablas o columnas con lógica de acceso diferente, definir reglas de autorización basadas en roles (RBAC) o rutas públicas independientes y seguras.
+
+### 8. 🚨 Typo en cabeceras CORS y Exposición de Errores (OWASP A05:2021)
+*   **Ubicación:** `index.php` (Líneas 13, 22).
+*   **Riesgo:**
+    *   La línea `header('Accesss-Control-Allow-Origin: *');` contiene un error ortográfico en la palabra `Accesss` (con tres 's'). Esto puede hacer que los navegadores ignoren la regla CORS.
+    *   `ini_set('display_errors', 1);` está activo. Mostrar errores detallados directamente en la pantalla del usuario en un entorno de producción revela rutas internas, nombres de tablas y datos que facilitan los ataques.
+*   **Mitigación:** corregir el header CORS a `Access-Control-Allow-Origin` y configurar `display_errors` a `0` para entornos de producción, manteniendo la escritura segura en logs internos.

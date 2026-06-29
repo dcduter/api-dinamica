@@ -62,7 +62,7 @@ if (isset($_POST)) {
         if (isset($_GET['token'])) {
 
 
-          /* =============================================
+            /* =============================================
               Peticion PUT para usuarios no autorizados 
               ===========================================*/
           if($_GET["token"] == "no" && isset($_GET["except"])){
@@ -89,56 +89,56 @@ if (isset($_POST)) {
                 }
 
                 // se pide respuesta del controlador para crear datos en cualquier tabla
-                $response -> postData($table, $_POST);
+                $response -> postData($_POST, $table);
 
           }else{
                     
                     /* =============================================
                       Peticion POST para usuarios autorizados 
-                      ===========================================*/
-                      
-                    // si no viene table y suffix su valor sera user
-                    $tableToken = $_GET['table'] ?? 'user';
-                    $suffix = $_GET['suffix'] ?? 'user';
+              ===========================================*/
+              
+            // si no viene table y suffix su valor sera user
+            $tableToken = $_GET['table'] ?? 'user';
+            $suffix = $_GET['suffix'] ?? 'user';
 
 
-                    $validate = Connection::tokenValidate($_GET['token'],$tableToken,$suffix);
+            $validate = Connection::tokenValidate($_GET['token'],$tableToken,$suffix);
 
-                    /* ====================================================================
-                    Solicitamos respuesta del controlador para crear datos en cualquier tabla
-                    ====================================================================*/
+            /* ====================================================================
+            Solicitamos respuesta del controlador para crear datos en cualquier tabla
+            ====================================================================*/
 
-                    if($validate === "ok"){
-                    
-                    // se llama la metodo postData
-                    $response->postData($_POST, $table);
-                    } 
-                    
-                    /* =========================
-                    Token expirado
-                    ========================= */
-                    else if($validate === "expired"){
-                        $json = array(
-                            'status' => 303,
-                            'results' => "Error: Token expirado"
-                        );
-                        echo json_encode($json, http_response_code($json['status']));
-                        return;
-                    }
-                    
-                    /* =========================
-                    el token no coincide en la BD
-                    ========================= */
-                    else {
-                        $json = array(
-                            'status' => 400,
-                            'results' => "Error: Usuario no autorizado"
-                        );
-                        echo json_encode($json, http_response_code($json['status']));
-                        return;
-                    }
-                }
+            if($validate === "ok"){
             
+            // se llama la metodo postData
+            $response->postData($_POST, $table);
+            } 
+            
+            /* =========================
+            Token expirado
+            ========================= */
+            else if($validate === "expired"){
+                $json = array(
+                    'status' => 303,
+                    'results' => "Error: Token expirado"
+                );
+                echo json_encode($json, http_response_code($json['status']));
+                return;
+            }
+            
+            /* =========================
+            el token no coincide en la BD
+            ========================= */
+            else {
+                $json = array(
+                    'status' => 400,
+                    'results' => "Error: Usuario no autorizado"
+                );
+                echo json_encode($json, http_response_code($json['status']));
+                return;
+                    }
+            }
+        
             /*======================================
               se solicita token para realizar la accion
               =========================================*/

@@ -18,20 +18,61 @@ use Firebase\JWT\JWT;
 class Connection
 {
     /**
+     * Variable para rastrear si ya se cargaron las variables de entorno.
+     * [Cambio por IA]
+     */
+    static private $envLoaded = false;
+
+    /**
+     * Carga de manera nativa y segura las variables del archivo .env a $_ENV, $_SERVER y putenv.
+     * [Cambio por IA]
+     */
+    static public function loadEnv()
+    {
+        if (self::$envLoaded) {
+            return;
+        }
+        $path = dirname(__DIR__) . '/.env';
+        if (file_exists($path)) {
+            $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if (empty($line) || strpos($line, '#') === 0) {
+                    continue;
+                }
+                if (strpos($line, '=') !== false) {
+                    list($name, $value) = explode('=', $line, 2);
+                    $name = trim($name);
+                    $value = trim($value);
+                    $value = trim($value, '"\'');
+                    if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+                        putenv("{$name}={$value}");
+                        $_ENV[$name] = $value;
+                        $_SERVER[$name] = $value;
+                    }
+                }
+            }
+        }
+        self::$envLoaded = true;
+    }
+
+    /**
      * INFORMACIÓN DE LA BASE DE DATOS
      *
      * [Cambio por IA]
      * Método estático que retorna la configuración de conexión de la BD en un array asociativo.
+     * Lee de forma segura desde las variables de entorno cargadas.
      *
      * @return array Arreglo con claves 'database', 'user' y 'pass'.
      */
     static public function infoDataBase()
-    {  // se usa static para que el metodo pueda ser llamado sin instanciar la clase
+    {
+        self::loadEnv();
 
         $infoDB = array(
-            'database' => 'database-1',
-            'user' => 'root',
-            'pass' => ''
+            'database' => getenv('DB_NAME') ?: 'database-1',
+            'user' => getenv('DB_USER') ?: 'root',
+            'pass' => getenv('DB_PASS') !== false ? getenv('DB_PASS') : ''
         );
 
         return $infoDB;
@@ -98,17 +139,20 @@ class Connection
 
     /* ======== VALIDAR LA EXISTENCIA DE UNA TABLA EN LA BD */
 
-    // Nota: este metodo se debe llamar en cado solicitud en el modelo para que valide si existe la tabla y si no existe da status 404
+    // Nota: este metodo se debe llamar en cada solicitud en el modelo para que valide si existe la tabla y si no existe da status 404
     static public function getColumnsData($table, $columns)
     {
         // se almacena el nombre de la base de datos en una variable
         $database = Connection::infoDataBase()['database'];
 
-        // teniendo la conexion se pasa en el siguente return para que compare el nombre de las tablas con la que se envia
-        $validate = Connection::connectDataBase()
-            // se retorna la seleccion de todas la tablas de la base
-            ->query("SELECT COLUMN_NAME AS item FROM information_schema.columns WHERE table_schema = '$database' AND table_name = '$table'")
-            ->fetchAll(PDO::FETCH_OBJ);  // el OBJ es para obtener la consulta en un objeto
+        // [Cambio por IA] Corrección de Inyección SQL: Se usa una consulta preparada en lugar de query() con interpolación directa.
+        $link = Connection::connectDataBase();
+        $stmt = $link->prepare("SELECT COLUMN_NAME AS item FROM information_schema.columns WHERE table_schema = :database AND table_name = :table");
+        $stmt->execute([
+            ':database' => $database,
+            ':table' => $table
+        ]);
+        $validate = $stmt->fetchAll(PDO::FETCH_OBJ);  // el OBJ es para obtener la consulta en un objeto
 
         // validar que la tabla existe
         if (!$validate) {
@@ -191,9 +235,8 @@ class Connection
     ======================================== */
 
     static public function apiKey(){
-
-       return "api_XhoKafOhvrBeoiqkc2rxilhAOxd1tTJB";
-
+       self::loadEnv();
+       return getenv('API_KEY') ?: "api_XhoKafOhvrBeoiqkc2rxilhAOxd1tTJB";
     }
 
     /* ==============================

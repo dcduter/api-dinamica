@@ -19,7 +19,7 @@ ini_set('error_log', "C:/wamp64/www/apirest-dinamica/errores_log"); // generar u
 /* ================================================================
     CORS
     =============================================================== */
-    header('Accesss-Control-Allow-Origin: *'); // permite acceso de cualquier origen
+    header('Access-Control-Allow-Origin: *'); // permite acceso de cualquier origen
     header('Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
     header('content-type: application/json; charset=utf-8');

@@ -39,15 +39,15 @@ class PostController
     // se envia la data y la table
     static public function postRegister($table, $data, $suffix)
     {
-        // se pregunta si la contraseña no viena null
+        // se pregunta si la contraseña no viene null
         if (isset($data['password_' . $suffix]) && $data['password_' . $suffix] != null) {
-            // se encripta la contraseña con crypt_blowfish
-            $crypy = crypt($data['password_' . $suffix], '$2a$07$usesomesillystringforsalt$');
+            // [Cambio por IA] Corrección de cifrado inseguro: se reemplaza crypt con salt estático por password_hash con BCRYPT.
+            $crypt = password_hash($data['password_' . $suffix], PASSWORD_BCRYPT);
 
             // se guardan los datos en data
-            $data['password_' . $suffix] = $crypy;
+            $data['password_' . $suffix] = $crypt;
 
-            // se solicita la modelo guardar los datos
+            // se solicita al modelo guardar los datos
             $response = PostModel::postData($table, $data);
 
             // se retorna la respuesta al cliente
@@ -70,16 +70,17 @@ class PostController
                     /* ==================
                       generar token
                       ===================== */
-                    // se pasa le id y el email con el sufijo
+                    // se pasa el id y el email con el sufijo
                     $token = Connection::jwt($response[0]->{'id_' . $suffix}, $response[0]->{'email_' . $suffix});
 
-                    // [Cambio por IA] Se amplió la clave a 32 caracteres (256 bits) para cumplir con el mínimo requerido por firebase/php-jwt para HS256
-                    $jwt = JWT::encode($token, 'lksdjflkj3klj4lskdjfklnj23asdfgh', 'HS256');  // el HS256 es el algoritmo que se usa para encriptar
+                    // [Cambio por IA] Se carga la clave de firma de JWT desde variables de entorno (.env)
+                    Connection::loadEnv();
+                    $jwtKey = getenv('JWT_SECRET') ?: 'lksdjflkj3klj4lskdjfklnj23asdfgh';
+                    $jwt = JWT::encode($token, $jwtKey, 'HS256');  // el HS256 es el algoritmo que se usa para encriptar
 
                     /* ================================================
                       Actualizamos la base de datos con el token del usuario
                       =================================================== */
-                    // se
                     $data = array(
                         'token_' . $suffix => $jwt,
                         'token_exp_' . $suffix => $token['exp']
@@ -89,7 +90,7 @@ class PostController
                     $update = PutModel::putData($table, $data, $response[0]->{'id_' . $suffix}, 'id_' . $suffix);
 
                     if (isset($update['comment']) && $update['comment'] == 'editado correctamente') {
-                        // se devuele los datos actualizado con $response con los datos del token y fecha de expiracion
+                        // se devuelve los datos actualizados con $response con los datos del token y fecha de expiracion
 
                         // se pasa el token
                         $response[0]->{'token_' . $suffix} = $jwt;
@@ -123,92 +124,67 @@ class PostController
        ===============================================*/
 
     // se crea una funcion statica
-    // se envia la data y la table
-    static public function postLogin($table, $data, $suffix)
+    // se envia la data y la tabl    static public function postLogin($table, $data, $suffix)
     {
-      
-            /* ==========================
-             validar que el usuario exista en base de datos
-             ============================ */
+        /* ==========================
+         validar que el usuario exista en base de datos
+         ============================ */
+        $response = GetModel::getDataFilter($table, '*', 'email_' . $suffix, $data['email_' . $suffix], null, null, null, null);
 
-            $response = GetModel::getDataFilter($table, '*', 'email_' . $suffix, $data['email_' . $suffix], null, null, null, null);
+        if (!empty($response)) {
+            // si la respuesta de contraseña es diferente a null se registro de forma directa
+            $hashInDb = $response[0]->{'password_' . $suffix};
+            if ($hashInDb != null) {
+                /* ==================
+                validación segura de contraseña
+                [Cambio por IA]
+                ===================== */
+                $passwordInput = $data['password_' . $suffix];
+                $isPasswordCorrect = false;
+                $needsRehash = false;
 
-            if (!empty($response)) {
-                // si la respuesta de contraseña es diferente a null se registro de forma directa
-                if ($response[0]->{'password_' . $suffix} != null) {
-                    /* ==================
-                    encriptamos la contraseña
-                    ===================== */
-                    $crypt = crypt($data['password_' . $suffix], '$2a$07$usesomesillystringforsalt$');
-
-                    if ($response[0]->{'password_' . $suffix} == $crypt) {
-                        /* ==================
-                        generar token
-                        ===================== */
-                        // se pasa le id y el email con el sufijo
-                        $token = Connection::jwt($response[0]->{'id_' . $suffix}, $response[0]->{'email_' . $suffix});
-
-                        // [Cambio por IA] Se amplió la clave a 32 caracteres (256 bits) para cumplir con el mínimo requerido por firebase/php-jwt para HS256
-                        $jwt = JWT::encode($token, 'lksdjflkj3klj4lskdjfklnj23asdfgh', 'HS256');  // el HS256 es el algoritmo que se usa para encriptar
-
-                        /* ================================================
-                        Actualizamos la base de datos con el token del usuario
-                        =================================================== */
-                        // se
-                        $data = array(
-                            'token_' . $suffix => $jwt,
-                            'token_exp_' . $suffix => $token['exp']
-                        );
-
-                        // solicitamos la actualizacion de los datos del usuario
-                        $update = PutModel::putData($table, $data, $response[0]->{'id_' . $suffix}, 'id_' . $suffix);
-
-                        if (isset($update['comment']) && $update['comment'] == 'editado correctamente') {
-                            // se devuele los datos actualizado con $response con los datos del token y fecha de expiracion
-
-                            // se pasa el token
-                            $response[0]->{'token_' . $suffix} = $jwt;
-
-                            // se pasa la fecha de expiracion
-                            $response[0]->{'token_exp_' . $suffix} = $token['exp'];
-
-                            // se devuelve la respuesta
-                            $return = new PostController();
-                            $return->fncResponse($response, null, $suffix);
-                        }
-                    } else {
-                        $response = null;
-                        $return = new PostController();
-                        $return->fncResponse($response, 'clave errada', $suffix);
-                    }
+                if (password_verify($passwordInput, $hashInDb)) {
+                    $isPasswordCorrect = true;
                 } else {
-                    /* ============================================
-                     Actualizamos el token para usuarios logueados desde app externas
-                     ============================================ */
-                    // si es nulo se vuelve a actualizar el token
+                    // Fallback para hashes creados con la función crypt y salt estático heredados
+                    $oldCryptHash = crypt($passwordInput, '$2a$07$usesomesillystringforsalt$');
+                    if ($hashInDb === $oldCryptHash) {
+                        $isPasswordCorrect = true;
+                        $needsRehash = true;
+                    }
+                }
+
+                if ($isPasswordCorrect) {
+                    // Si inició sesión con el hash antiguo, lo actualizamos al hash seguro moderno de Bcrypt
+                    if ($needsRehash) {
+                        $newHash = password_hash($passwordInput, PASSWORD_BCRYPT);
+                        PutModel::putData($table, ['password_' . $suffix => $newHash], $response[0]->{'id_' . $suffix}, 'id_' . $suffix);
+                    }
 
                     /* ==================
-                        generar token
-                        ===================== */
+                    generar token
+                    ===================== */
+                    // se pasa el id y el email con el sufijo
                     $token = Connection::jwt($response[0]->{'id_' . $suffix}, $response[0]->{'email_' . $suffix});
 
-                    // [Cambio por IA] Se amplió la clave a 32 caracteres (256 bits) para cumplir con el mínimo requerido por firebase/php-jwt para HS256
-                    $jwt = JWT::encode($token, 'lksdjflkj3klj4lskdjfklnj23asdfgh', 'HS256');  // el HS256 es el algoritmo que se usa para encriptar
+                    // [Cambio por IA] Se carga la clave de firma de JWT desde variables de entorno (.env)
+                    Connection::loadEnv();
+                    $jwtKey = getenv('JWT_SECRET') ?: 'lksdjflkj3klj4lskdjfklnj23asdfgh';
+                    $jwt = JWT::encode($token, $jwtKey, 'HS256');
 
                     /* ================================================
                     Actualizamos la base de datos con el token del usuario
                     =================================================== */
-                    // se
-                    $data = array(
+                    $dataUpdate = array(
                         'token_' . $suffix => $jwt,
                         'token_exp_' . $suffix => $token['exp']
                     );
 
                     // solicitamos la actualizacion de los datos del usuario
-                    $update = PutModel::putData($table, $data, $response[0]->{'id_' . $suffix}, 'id_' . $suffix);
+                    $update = PutModel::putData($table, $dataUpdate, $response[0]->{'id_' . $suffix}, 'id_' . $suffix);
 
                     if (isset($update['comment']) && $update['comment'] == 'editado correctamente') {
-                        // se devuele los datos actualizado con $response con los datos del token y fecha de expiracion
+                        // se devuelve los datos actualizados con $response con los datos del token y fecha de expiracion
 
                         // se pasa el token
                         $response[0]->{'token_' . $suffix} = $jwt;
@@ -220,13 +196,57 @@ class PostController
                         $return = new PostController();
                         $return->fncResponse($response, null, $suffix);
                     }
+                } else {
+                    $response = null;
+                    $return = new PostController();
+                    $return->fncResponse($response, 'clave errada', $suffix);
                 }
             } else {
-                $response = null;
-                $return = new PostController();
-                $return->fncResponse($response, 'email errado', $suffix);
+                /* ============================================
+                 Actualizamos el token para usuarios logueados desde app externas
+                 ============================================ */
+                // si es nulo se vuelve a actualizar el token
+
+                /* ==================
+                    generar token
+                    ===================== */
+                $token = Connection::jwt($response[0]->{'id_' . $suffix}, $response[0]->{'email_' . $suffix});
+
+                // [Cambio por IA] Se carga la clave de firma de JWT desde variables de entorno (.env)
+                Connection::loadEnv();
+                $jwtKey = getenv('JWT_SECRET') ?: 'lksdjflkj3klj4lskdjfklnj23asdfgh';
+                $jwt = JWT::encode($token, $jwtKey, 'HS256');
+
+                /* ================================================
+                Actualizamos la base de datos con el token del usuario
+                =================================================== */
+                $dataUpdate = array(
+                    'token_' . $suffix => $jwt,
+                    'token_exp_' . $suffix => $token['exp']
+                );
+
+                // solicitamos la actualizacion de los datos del usuario
+                $update = PutModel::putData($table, $dataUpdate, $response[0]->{'id_' . $suffix}, 'id_' . $suffix);
+
+                if (isset($update['comment']) && $update['comment'] == 'editado correctamente') {
+                    // se devuelve los datos actualizados con $response con los datos del token y fecha de expiracion
+
+                    // se pasa el token
+                    $response[0]->{'token_' . $suffix} = $jwt;
+
+                    // se pasa la fecha de expiracion
+                    $response[0]->{'token_exp_' . $suffix} = $token['exp'];
+
+                    // se devuelve la respuesta
+                    $return = new PostController();
+                    $return->fncResponse($response, null, $suffix);
+                }
             }
-        
+        } else {
+            $response = null;
+            $return = new PostController();
+            $return->fncResponse($response, 'email errado', $suffix);
+        }
     }
 
     /* ========= RESPUESTAS DEL CONTROLADOR ========= */

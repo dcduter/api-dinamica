@@ -344,8 +344,8 @@ class GetModel
         }
 
         // la consulta se prepara de forma dinamica con $select que viene desde el controlador y este desde get.php
-        // SIN ORDENAR NI LIMITAR DATOS
-        $sql = "SELECT $select FROM $table WHERE $linkToArray[0] LIKE '%$searchToArray[0]%' $linkToText";
+        // [Cambio por IA] Corrección de Inyección SQL: se usa un parámetro preparado :searchParam para la cláusula LIKE.
+        $sql = "SELECT $select FROM $table WHERE $linkToArray[0] LIKE :searchParam $linkToText";
 
         // si orderBy y orderMode no son nulos se añade a la consulta sql, starAt y endAt en null para no limitar los datos, solo ordenarlos
         if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
@@ -366,21 +366,17 @@ class GetModel
         try {
             $stmt = Connection::connectDataBase()->prepare($sql);
 
-            // se hace el foreach para arme la
+            // [Cambio por IA] Vinculamos el parámetro de búsqueda con comodines %
+            $searchVal = '%' . $searchToArray[0] . '%';
+            $stmt->bindValue(':searchParam', $searchVal, PDO::PARAM_STR);
+
+            // se hace el foreach para vincular los filtros adicionales
             foreach ($linkToArray as $key => $value) {
-                // pone en un if para que no tenga encuenta el indice 0, para evitar errores de logica
+                // pone en un if para que no tenga en cuenta el indice 0, para evitar errores de logica
                 if ($key > 0) {
-                    $stmt->bindParam(':' . $value, $searchToArray[$key], PDO::PARAM_STR);
+                    $stmt->bindValue(':' . $value, $searchToArray[$key], PDO::PARAM_STR);
                 }
             }
-
-            // Construimos el patrón LIKE con wildcard (%) al inicio y al final.
-            // Esto permite buscar el término en cualquier parte de la cadena.
-            // $searchParam = "%" . $search . "%";
-
-            // Vinculamos el valor a la variable de marcador :search.
-            // PDO::PARAM_STR asegura que se maneje como texto.
-            //  $stmt->bindParam(":search", $searchParam, PDO::PARAM_STR);
 
             $stmt->execute();
 
@@ -446,8 +442,8 @@ class GetModel
             }
 
             // la consulta se prepara de forma dinamica con $select que viene desde el controlador y este desde get.php
-            // --- SIN ORDENAR NI LIMITAR DATOS ---
-            $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkToArray[0] LIKE '%$searchToArray[0]%' $linkToText";
+            // [Cambio por IA] Corrección de Inyección SQL: se usa un parámetro preparado :searchParam para la cláusula LIKE.
+            $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkToArray[0] LIKE :searchParam $linkToText";
 
             // si orderBy y orderMode no son nulos se añade a la consulta sql, starAt y endAt en null para no limitar los datos, solo ordenarlos
             if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
@@ -468,12 +464,16 @@ class GetModel
             try {
                 $stmt = Connection::connectDataBase()->prepare($sql);
 
+                // [Cambio por IA] Vinculamos el parámetro de búsqueda con comodines %
+                $searchVal = '%' . $searchToArray[0] . '%';
+                $stmt->bindValue(':searchParam', $searchVal, PDO::PARAM_STR);
+
                 foreach ($linkToArray as $key => $value) {
                     // bindParam sustituye el marcador (ej: :columna) por el valor real del filtro.
                     // PDO::PARAM_STR asegura que el dato se trate como cadena.
                     if ($key > 0) {
-                        // [Cambio por IA] Se corrigió la variable $searchArray a $searchToArray
-                        $stmt->bindParam(':' . $value, $searchToArray[$key], PDO::PARAM_STR);
+                        // [Cambio por IA] Usamos bindValue en lugar de bindParam para evitar problemas de referencia en el bucle
+                        $stmt->bindValue(':' . $value, $searchToArray[$key], PDO::PARAM_STR);
                     }
                 }
 
@@ -523,11 +523,23 @@ class GetModel
         //     }
         // }
         $filter = '';
+        $inParams = [];
         if ($filterTo != null && $inTo != null) {
-            $filter .= " AND $filterTo IN ($inTo)";
+            // [Cambio por IA] Corrección de Inyección SQL: separamos y parametrizamos el filtro IN
+            $inValues = explode(',', $inTo);
+            $inPlaceholders = [];
+            foreach ($inValues as $index => $val) {
+                $valClean = trim($val, " '\"");
+                $placeholder = ":inVal_" . $index;
+                $inPlaceholders[] = $placeholder;
+                $inParams[$placeholder] = $valClean;
+            }
+            $placeholdersStr = implode(', ', $inPlaceholders);
+            $filter .= " AND $filterTo IN ($placeholdersStr)";
         }
         // -- sin ordenar ni limitar datos --
-        $sql = "SELECT $select FROM $table WHERE $linkTo BETWEEN '$between1' AND '$between2' $filter";
+        // [Cambio por IA] Corrección de Inyección SQL: se usan marcadores de posición para BETWEEN
+        $sql = "SELECT $select FROM $table WHERE $linkTo BETWEEN :between1 AND :between2 $filter";
 
         // -- ordenar datos sin limitar --
         if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
@@ -544,15 +556,18 @@ class GetModel
             $sql .= " LIMIT $startAt, $endAt";
         }
 
-        $stmt = Connection::connectDataBase()->prepare($sql);
-
-        // foreach ($linkToArray as $key => $value) {
-        //     if ($key > 0) {
-        //         $stmt->bindParam(":" . $value, $between1Array[$key], PDO::PARAM_STR);
-        //     }
-        // }
-
         try {
+            $stmt = Connection::connectDataBase()->prepare($sql);
+            
+            // Vinculamos parámetros de rango
+            $stmt->bindValue(':between1', $between1, PDO::PARAM_STR);
+            $stmt->bindValue(':between2', $between2, PDO::PARAM_STR);
+
+            // Vinculamos parámetros de lista IN
+            foreach ($inParams as $placeholder => $val) {
+                $stmt->bindValue($placeholder, $val, PDO::PARAM_STR);
+            }
+
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_CLASS);
         } catch (PDOException $e) {
@@ -581,9 +596,20 @@ class GetModel
         }
 
         $filter = '';
+        $inParams = [];
         // si el dirents de $filterTo y $inTo no es nulo se concatena los valores de $filterTo y $inTo para formar el where
         if ($filterTo != null && $inTo != null) {
-            $filter .= " AND $filterTo IN ($inTo)";
+            // [Cambio por IA] Corrección de Inyección SQL: separamos y parametrizamos el filtro IN
+            $inValues = explode(',', $inTo);
+            $inPlaceholders = [];
+            foreach ($inValues as $index => $val) {
+                $valClean = trim($val, " '\"");
+                $placeholder = ":inVal_" . $index;
+                $inPlaceholders[] = $placeholder;
+                $inParams[$placeholder] = $valClean;
+            }
+            $placeholdersStr = implode(', ', $inPlaceholders);
+            $filter .= " AND $filterTo IN ($placeholdersStr)";
         }
 
         $relArray = explode(',', $rel);
@@ -600,7 +626,8 @@ class GetModel
             }
 
             // -- sin ordenar ni limitar datos --
-            $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkTo BETWEEN '$between1' AND '$between2' $filter";
+            // [Cambio por IA] Corrección de Inyección SQL: se usan marcadores de posición para BETWEEN
+            $sql = "SELECT $select FROM $relArray[0] $innerJoinText WHERE $linkTo BETWEEN :between1 AND :between2 $filter";
 
             // -- ordenar datos sin limitar --
             if ($orderBy != null && $orderMode != null && $startAt == null && $endAt == null) {
@@ -617,15 +644,18 @@ class GetModel
                 $sql .= " LIMIT $startAt, $endAt";
             }
 
-            $stmt = Connection::connectDataBase()->prepare($sql);
-
-            // foreach ($linkToArray as $key => $value) {
-            //     if ($key > 0) {
-            //         $stmt->bindParam(":" . $value, $between1Array[$key], PDO::PARAM_STR);
-            //     }
-            // }
-
             try {
+                $stmt = Connection::connectDataBase()->prepare($sql);
+
+                // Vinculamos parámetros de rango
+                $stmt->bindValue(':between1', $between1, PDO::PARAM_STR);
+                $stmt->bindValue(':between2', $between2, PDO::PARAM_STR);
+
+                // Vinculamos parámetros de lista IN
+                foreach ($inParams as $placeholder => $val) {
+                    $stmt->bindValue($placeholder, $val, PDO::PARAM_STR);
+                }
+
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_CLASS);
             } catch (PDOException $e) {
