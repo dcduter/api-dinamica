@@ -124,7 +124,8 @@ class PostController
        ===============================================*/
 
     // se crea una funcion statica
-    // se envia la data y la tabl    static public function postLogin($table, $data, $suffix)
+    // se envia la data y la tabl  
+    static public function postLogin($table, $data, $suffix)
     {
         /* ==========================
          validar que el usuario exista en base de datos

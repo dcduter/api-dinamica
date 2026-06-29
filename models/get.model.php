@@ -173,7 +173,7 @@ class GetModel
                 if ($key > 0) {
                     // Construimos la parte SQL: "AND columna = :columna"
                     // Usamos marcadores de posición (ej: :nombre_columna) para seguridad.
-                    $innerJoinText .= 'inner join ' . $value . ' on ' . $relArray[0] . '.id_' . $typeArray[$key] . ',' . $typeArray[0] . ' = ' . $value . '.id_' . $typeArray[$key] . ' ';
+                    $innerJoinText .= 'inner join ' . $value . ' on ' . $relArray[0] . '.id_' . $typeArray[$key] . '_' . $typeArray[0] . ' = ' . $value . '.id_' . $typeArray[$key] . ' ';
                 }
             }
         }
@@ -258,7 +258,7 @@ class GetModel
                 if ($key > 0) {
                     // Construimos la parte SQL: "AND columna = :columna"
                     // Usamos marcadores de posición (ej: :nombre_columna) para seguridad.
-                    $innerJoinText .= 'inner join ' . $value . ' on ' . $relArray[0] . '.id_' . $typeArray[$key] . ',' . $typeArray[0] . ' = ' . $value . '.id_' . $typeArray[$key] . ' ';
+                    $innerJoinText .= 'inner join ' . $value . ' on ' . $relArray[0] . '.id_' . $typeArray[$key] . '_' . $typeArray[0] . ' = ' . $value . '.id_' . $typeArray[$key] . ' ';
                 }
             }
 
@@ -437,7 +437,7 @@ class GetModel
                 if ($key > 0) {
                     // Construimos la parte SQL: "AND columna = :columna"
                     // Usamos marcadores de posición (ej: :nombre_columna) para seguridad.
-                    $innerJoinText .= 'inner join ' . $value . ' on ' . $relArray[0] . '.id_' . $typeArray[$key] . ',' . $typeArray[0] . ' = ' . $value . '.id_' . $typeArray[$key] . ' ';
+                    $innerJoinText .= 'inner join ' . $value . ' on ' . $relArray[0] . '.id_' . $typeArray[$key] . '_' . $typeArray[0] . ' = ' . $value . '.id_' . $typeArray[$key] . ' ';
                 }
             }
 
@@ -621,7 +621,7 @@ class GetModel
             foreach ($relArray as $key => $value) {
                 if ($key > 0) {
                     // se concatena los valores de $relArray y $typeArray para formar el inner join con la condicion de la llave foranea
-                    $innerJoinText .= 'inner join ' . $value . ' on ' . $relArray[0] . '.id_' . $typeArray[$key] . ',' . $typeArray[0] . ' = ' . $value . '.id_' . $typeArray[$key] . ' ';
+                    $innerJoinText .= 'inner join ' . $value . ' on ' . $relArray[0] . '.id_' . $typeArray[$key] . '_' . $typeArray[0] . ' = ' . $value . '.id_' . $typeArray[$key] . ' ';
                 }
             }
 
