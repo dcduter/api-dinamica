@@ -195,4 +195,18 @@ class Connection
        return "api_XhoKafOhvrBeoiqkc2rxilhAOxd1tTJB";
 
     }
+
+    /* ==============================
+      Acceso publico
+      ================================= */
+
+      static public function publicAccess(){
+
+
+        // tablas de acceso publico solo courses 
+       $tables = ["courses"];
+
+       return $tables;
+
+      }
 }
