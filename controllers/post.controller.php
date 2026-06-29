@@ -176,10 +176,17 @@ class PostController
                             $return = new PostController();
                             $return->fncResponse($response, null, $suffix);
                         }
+                    }
+                    // si no ingreso contraseña se ejecuta el siguinte codigo
+                    else if (!isset($data['password_' . $suffix]) || $data['password_' . $suffix] == null) {
+
+                        $return = new PostController();
+                        $return->fncResponse(null, 'error: ingrese la clave', $suffix);
+                        
                     } else {
                         $response = null;
                         $return = new PostController();
-                        $return->fncResponse($response, 'clave errada', $suffix);
+                        $return->fncResponse($response, 'error: clave errada', $suffix);
                     }
                 } else {
                     /* ============================================

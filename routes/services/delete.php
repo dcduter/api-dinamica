@@ -39,7 +39,7 @@
           /* =================
              Validar token para realizar la accion
              ================= */
-              $tableToken = $_GET['table'] ?? 'user';
+              $tableToken = $_GET['table'] ?? 'users';
             $suffix = $_GET['suffix'] ?? 'user';
 
 

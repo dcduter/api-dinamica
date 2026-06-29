@@ -989,3 +989,19 @@ Stack trace:
 #1 C:\wamp64\www\apirest-dinamica\index.php(25): routesController::index()
 #2 {main}
   thrown in C:\wamp64\www\apirest-dinamica\routes\routes.php on line 43
+[29-Jun-2026 18:52:12 UTC] Error SQL en getRelData: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '= instructors.id_instructor' at line 1
+[29-Jun-2026 19:07:09 UTC] PHP Warning:  Undefined array key "password_instructor" in C:\wamp64\www\apirest-dinamica\controllers\post.controller.php on line 142
+[29-Jun-2026 19:07:09 UTC] PHP Stack trace:
+[29-Jun-2026 19:07:09 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[29-Jun-2026 19:07:09 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:35
+[29-Jun-2026 19:07:09 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[29-Jun-2026 19:07:09 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:81
+[29-Jun-2026 19:07:09 UTC] PHP   5. PostController::postLogin($table = 'instructors', $data = ['email_instructor' => 'instructorse@gmail.com'], $suffix = 'instructor') C:\wamp64\www\apirest-dinamica\routes\services\post.php:56
+[29-Jun-2026 19:07:09 UTC] PHP Deprecated:  crypt(): Passing null to parameter #1 ($string) of type string is deprecated in C:\wamp64\www\apirest-dinamica\controllers\post.controller.php on line 142
+[29-Jun-2026 19:07:09 UTC] PHP Stack trace:
+[29-Jun-2026 19:07:09 UTC] PHP   1. {main}() C:\wamp64\www\apirest-dinamica\index.php:0
+[29-Jun-2026 19:07:09 UTC] PHP   2. routesController::index() C:\wamp64\www\apirest-dinamica\index.php:35
+[29-Jun-2026 19:07:09 UTC] PHP   3. include() C:\wamp64\www\apirest-dinamica\controllers\routes.contoller.php:25
+[29-Jun-2026 19:07:09 UTC] PHP   4. include() C:\wamp64\www\apirest-dinamica\routes\routes.php:81
+[29-Jun-2026 19:07:09 UTC] PHP   5. PostController::postLogin($table = 'instructors', $data = ['email_instructor' => 'instructorse@gmail.com'], $suffix = 'instructor') C:\wamp64\www\apirest-dinamica\routes\services\post.php:56
+[29-Jun-2026 19:07:09 UTC] PHP   6. crypt($string = '[Sensitive Parameter]', $salt = '$2a$07$usesomesillystringforsalt$') C:\wamp64\www\apirest-dinamica\controllers\post.controller.php:142

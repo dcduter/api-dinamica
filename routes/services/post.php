@@ -97,8 +97,8 @@ if (isset($_POST)) {
                       Peticion POST para usuarios autorizados 
                       ===========================================*/
                       
-                    // si no viene table y suffix su valor sera user
-                    $tableToken = $_GET['table'] ?? 'user';
+                    // si no viene table y suffix su valor sera users
+                    $tableToken = $_GET['table'] ?? 'users';
                     $suffix = $_GET['suffix'] ?? 'user';
 
 
